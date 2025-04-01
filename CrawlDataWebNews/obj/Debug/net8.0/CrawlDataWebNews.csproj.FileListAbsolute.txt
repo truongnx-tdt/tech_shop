@@ -40,3 +40,4 @@ D:\.NET\CrawlDataWebNews\CrawlDataWebNews\obj\Debug\net8.0\refint\CrawlDataWebNe
 D:\.NET\CrawlDataWebNews\CrawlDataWebNews\obj\Debug\net8.0\CrawlDataWebNews.pdb
 D:\.NET\CrawlDataWebNews\CrawlDataWebNews\obj\Debug\net8.0\CrawlDataWebNews.genruntimeconfig.cache
 D:\.NET\CrawlDataWebNews\CrawlDataWebNews\obj\Debug\net8.0\ref\CrawlDataWebNews.dll
+D:\.NET\CrawlDataWebNews\CrawlDataWebNews\obj\Debug\net8.0\CrawlDataWebNews.sourcelink.json

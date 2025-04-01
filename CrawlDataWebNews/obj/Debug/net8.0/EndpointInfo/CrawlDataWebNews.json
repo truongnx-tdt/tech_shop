@@ -5,6 +5,18 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/version": {
+      "get": {
+        "tags": [
+          "CrawlData"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/get-by-ctg": {
       "get": {
         "tags": [

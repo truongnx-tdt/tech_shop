@@ -20,7 +20,11 @@ namespace CrawlDataWebNews.Controllers
             var rs = await _getDataService.GetData(linkWeb);
             return Ok(rs);
         }
-
+        [HttpGet("/api/version")]
+        public IActionResult Version()
+        {
+            return Ok(new Version(0, 0, 2));
+        }
         [HttpGet(Routes.GetByCtg)]
         public async Task<IActionResult> GetByCtg([Required]string linkWeb, [Required]string extension)
         {

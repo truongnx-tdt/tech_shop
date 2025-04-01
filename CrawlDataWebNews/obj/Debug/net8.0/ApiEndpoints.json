@@ -19,5 +19,15 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CrawlDataWebNews.Controllers.CrawlDataController",
+    "Method": "Version",
+    "RelativePath": "api/version",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]

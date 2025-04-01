@@ -13,3 +13,4 @@ D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Application\obj\Debug\net8.0\CrawlData
 D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Application\obj\Debug\net8.0\refint\CrawlDataWebNews.Application.dll
 D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Application\obj\Debug\net8.0\CrawlDataWebNews.Application.pdb
 D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Application\obj\Debug\net8.0\ref\CrawlDataWebNews.Application.dll
+D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Application\obj\Debug\net8.0\CrawlDataWebNews.Application.sourcelink.json

@@ -58,7 +58,7 @@ namespace CrawlDataWebNews.Application.Services
                 tasks.Add(Task.Run(async () =>
                 {
                     var ortherPage = await Helper.InvokToUrlAsync(linkDetail);
-                    if (ortherPage.IsSuccessStatusCode)
+                    if (ortherPage != null)
                     {
                         string subHtml = await Helper.ReadContentAsync(ortherPage);
                         var category = rs.FirstOrDefault(c => c.Articles.Any(a => a.Href == linkDetail));
