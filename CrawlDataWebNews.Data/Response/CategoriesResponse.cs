@@ -6,7 +6,7 @@
         public string? Description { get; set; }
         public string? Href { get; set; }
         public string? Type { get; set; }
-        public ICollection<Article>? Articles { get; set; }
+        public List<Article>? Articles { get; set; }
     }
     public class Article
     {

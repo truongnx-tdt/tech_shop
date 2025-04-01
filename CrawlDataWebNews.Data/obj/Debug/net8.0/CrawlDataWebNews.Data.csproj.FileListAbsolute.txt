@@ -10,3 +10,4 @@ D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Data\obj\Debug\net8.0\refint\CrawlData
 D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Data\obj\Debug\net8.0\CrawlDataWebNews.Data.pdb
 D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Data\obj\Debug\net8.0\ref\CrawlDataWebNews.Data.dll
 D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Data\obj\Debug\net8.0\CrawlDataWebNews.Data.csproj.AssemblyReference.cache
+D:\.NET\CrawlDataWebNews\CrawlDataWebNews.Data\obj\Debug\net8.0\CrawlDataWebNews.Data.sourcelink.json

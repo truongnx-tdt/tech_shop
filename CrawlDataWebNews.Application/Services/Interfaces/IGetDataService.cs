@@ -5,6 +5,6 @@ namespace CrawlDataWebNews.Application.Services.Interfaces
     public interface IGetDataService 
     {
         Task<ICollection<CategoriesResponse>> GetData(string url);
-        Task<ICollection<CategoriesResponse>> GetByCtg(string url, string extension);
+        Task<CategoriesResponse> GetByCtg(string url, string extension);
     }
 }

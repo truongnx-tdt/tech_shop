@@ -9,9 +9,9 @@ namespace CrawlDataWebNews.Application.Services
 {
     public class GetDataService : IGetDataService
     {
-        public async Task<ICollection<CategoriesResponse>> GetByCtg(string url, string extension)
+        public async Task<CategoriesResponse> GetByCtg(string url, string extension)
         {
-            var rs = new List<CategoriesResponse>();
+            var rs = new CategoriesResponse();
             var hrefDetailList = new HashSet<string>();
             var articles = new List<Article>();
             var tasks = new List<Task>();
@@ -43,7 +43,7 @@ namespace CrawlDataWebNews.Application.Services
                         }
                     }
                     cate.Articles = articles;
-                    rs.Add(cate);
+                    rs = cate;
                 }
             });
             tasks.Add(task);
@@ -61,24 +61,14 @@ namespace CrawlDataWebNews.Application.Services
                     if (ortherPage != null)
                     {
                         string subHtml = await Helper.ReadContentAsync(ortherPage);
-                        var category = rs.FirstOrDefault(c => c.Articles.Any(a => a.Href == linkDetail));
-                        if (category != null)
+
+                        var existingArticle = rs.Articles.FirstOrDefault(a => a.Href == linkDetail);
+                        if (existingArticle != null)
                         {
-                            var existingArticle = category.Articles.FirstOrDefault(a => a.Href == linkDetail);
-                            if (existingArticle != null)
-                            {
-                                existingArticle.Title = await Helper.ExtractTitle(subHtml);
-                                existingArticle.Content = await Helper.ExtractContent(subHtml);
-                                existingArticle.ContentHtml = await Helper.ExtractContentHtml(subHtml);
-                                existingArticle.Author = await Helper.ExtractAuthor(existingArticle.ContentHtml);
-
-                                // Kiểm tra nếu content rỗng, xóa article
-                                if (string.IsNullOrEmpty(existingArticle.Content))
-                                {
-                                    category.Articles.Remove(existingArticle); // Xóa article khỏi category
-                                }
-                            }
-
+                            existingArticle.Title = await Helper.ExtractTitle(subHtml);
+                            existingArticle.Content = await Helper.ExtractContent(subHtml);
+                            existingArticle.ContentHtml = await Helper.ExtractContentHtml(subHtml);
+                            existingArticle.Author = await Helper.ExtractAuthor(existingArticle.ContentHtml);
                         }
                     }
                 }));
@@ -89,6 +79,12 @@ namespace CrawlDataWebNews.Application.Services
                 }
             }
             await Task.WhenAll(tasks);
+            if (rs.Articles != null)
+            {
+                rs.Articles.RemoveAll(article =>
+                    string.IsNullOrEmpty(article.ContentHtml)
+                   );
+            }
             return rs;
         }
 
