@@ -1,0 +1,6 @@
+@CrawlDataWebNews_HostAddress = http://localhost:5070
+
+GET {{CrawlDataWebNews_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

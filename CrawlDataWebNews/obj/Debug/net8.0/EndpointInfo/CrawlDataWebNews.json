@@ -1,0 +1,40 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "CrawlDataWebNews",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/get-by-ctg": {
+      "get": {
+        "tags": [
+          "CrawlData"
+        ],
+        "parameters": [
+          {
+            "name": "linkWeb",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "extension",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": { }
+}

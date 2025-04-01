@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "u2tUWCbiqqshO9TXWNUulV+c1FWKmshH3/bD9Q2QANU=",
+  "Source": "CrawlDataWebNews",
+  "BasePath": "_content/CrawlDataWebNews",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
