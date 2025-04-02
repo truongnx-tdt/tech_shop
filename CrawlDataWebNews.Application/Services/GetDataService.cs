@@ -11,45 +11,42 @@ namespace CrawlDataWebNews.Application.Services
     {
         public async Task<CategoriesResponse> GetByCtg(string url, string extension)
         {
+            var uri = new Uri(url);
+            string currentUrl = uri.Scheme + "://" + uri.Host;
             var rs = new CategoriesResponse();
             var hrefDetailList = new HashSet<string>();
             var articles = new List<Article>();
             var tasks = new List<Task>();
-            var task = Task.Run(async () =>
+
+            var ortherPage = await Helper.InvokToUrlAsync(url);
+            if (ortherPage != null)
             {
-                var ortherPage = await Helper.InvokToUrlAsync(url);
-                if (ortherPage != null)
+                string subHtml = await Helper.ReadContentAsync(ortherPage);
+                var childrenLinks = await Helper.ExtractLinksAsync(subHtml, currentUrl, extension, true);
+                var cate = new CategoriesResponse
                 {
-                    string subHtml = await Helper.ReadContentAsync(ortherPage);
-                    var childrenLinks = await Helper.ExtractLinksAsync(subHtml, url, extension, true);
-                    var articles = new List<Article>();
-                    var cate = new CategoriesResponse
-                    {
-                        Title = await Helper.ExtractTitle(subHtml),
-                        Href = url,
-                    };
+                    Title = await Helper.ExtractTitle(subHtml),
+                    Href = url,
+                };
 
-                    foreach (var subLink in childrenLinks)
+                foreach (var subLink in childrenLinks)
+                {
+                    string htmlUrl = subLink.StartsWith(currentUrl) ? subLink : currentUrl + subLink;
+                    if (!hrefDetailList.Contains(htmlUrl))
                     {
-                        string htmlUrl = subLink.StartsWith(url) ? subLink : url + subLink;
-                        if (!hrefDetailList.Contains(htmlUrl))
+                        hrefDetailList.Add(htmlUrl);
+                        articles.Add(new Article
                         {
-                            hrefDetailList.Add(htmlUrl);
-                            articles.Add(new Article
-                            {
-                                Href = htmlUrl,
-                                Id = Guid.NewGuid(),
-                            });
-                        }
+                            Href = htmlUrl,
+                            Id = Guid.NewGuid(),
+                        });
                     }
-                    cate.Articles = articles;
-                    rs = cate;
                 }
-            });
-            tasks.Add(task);
+                cate.Articles = articles;
+                rs = cate;
+            }
 
-            await Task.WhenAll(tasks);
-            tasks.Clear();
+
 
             int batchSize = 5;
             tasks.Clear();
