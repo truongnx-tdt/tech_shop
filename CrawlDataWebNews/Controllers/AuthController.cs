@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using CrawlDataWebNews.Data.Request;
 using CrawlDataWebNews.Application.Services.Auth;
 using CrawlDataWebNews.Data.Response;
+using CrawlDataWebNews.Data.DTO;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using CrawlDataWebNews.Infrastructure.UnitOfWork;
 
 namespace CrawlDataWebNews.Controllers
 {
@@ -23,8 +27,12 @@ namespace CrawlDataWebNews.Controllers
             _logger = logger;
         }
         [HttpPost(RouteConst.Login)]
-        public async Task<ApiResponse<LoginResponse>> Login(LoginRequest request)
+        public async Task<ApiResponse<LoginResponse>> Login([FromBody] LoginRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return new ApiResponse<LoginResponse>() { Status = 400, Message = ResponseStatusName.UnSuccess, Error = ModelState };
+            }
             var rs = await _authService.Login(request);
             if (rs.IsLogin)
             {
@@ -34,10 +42,65 @@ namespace CrawlDataWebNews.Controllers
         }
 
         [HttpPost(RouteConst.Register)]
-        public async Task<ApiResponse<object>> Register(RegistrationRequest request)
+        public async Task<ApiResponse<object>> Register([FromBody] RegistrationRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return new ApiResponse<object>() { Status = 400, Message = ResponseStatusName.UnSuccess, Error = ModelState };
+            }
             var rs = await _authService.Registeration(request);
             return new ApiResponse<object>() { Status = rs.Item1, Message = rs.Item2 };
+        }
+        [HttpPost(RouteConst.TokenRefresh)]
+        public async Task<ApiResponse<TokenModel>> Refresh(TokenModel tokenModel)
+        {
+            try
+            {
+                var rs = await _authService.TokenRefresh(tokenModel);
+                return new ApiResponse<TokenModel>() { Status = ResponseStatusCode.Success, Data = rs, Message = ResponseStatusName.Success };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<TokenModel>() { Status = ResponseStatusCode.UnSuccess, Message = ex.Message };
+            }
+        }
+        [Authorize]
+        [HttpPost(RouteConst.Logout)]
+        public async Task<ApiResponse<object>> Logout()
+        {
+            try
+            {
+                var username = User.Identity?.Name;
+                var sessionId = User.Claims.FirstOrDefault(c => c.Type == "session_id")?.Value;
+
+                var rs = await _authService.LogoutAsync(username, sessionId);
+                return new ApiResponse<object>()
+                {
+                    Status = rs.Item1 ? ResponseStatusCode.Success : ResponseStatusCode.UnSuccess,
+                    Message = rs.Item2
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<object>()
+                {
+                    Status = ResponseStatusCode.UnSuccess,
+                    Message = ex.Message
+                };
+            }
+
+        }
+        [Authorize]
+        [HttpPost(RouteConst.LogoutAll)]
+        public async Task<ApiResponse<object>> LogoutAll()
+        {
+            var username = User.Identity?.Name;
+            var rs = await _authService.LogoutAllAsync(username);
+            return new ApiResponse<object>()
+            {
+                Status = ResponseStatusCode.Success,
+                Message = rs.Item2
+            };
         }
     }
 }

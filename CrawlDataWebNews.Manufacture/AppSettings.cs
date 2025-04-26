@@ -26,5 +26,6 @@ namespace CrawlDataWebNews.Manufacture
         public static string SecretKey => configuration["JWT:SecretKey"] ?? "";
         #endregion
         public static string Salt => configuration["Salt"] ?? "";
+        public static int RefreshTokenExperyTimeInDay => (int)Convert.ToInt64(configuration["RefreshToken:ExpiryTimeInDay"]);
     }
 }

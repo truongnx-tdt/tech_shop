@@ -181,3 +181,123 @@
 2025-04-25 17:27:44.3025 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
 2025-04-25 17:27:44.3113 Info Configuration initialized.
 2025-04-25 17:27:44.5898 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 09:17:38.3413 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 09:17:38.3482 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 09:17:38.3482 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 09:17:38.3721 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 09:17:38.3721 Info Configuration initialized.
+2025-04-26 09:17:39.0582 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 11:29:31.8286 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 11:29:31.8341 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 11:29:31.8341 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 11:29:31.8596 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 11:29:31.8596 Info Configuration initialized.
+2025-04-26 11:29:32.4534 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 11:45:22.1830 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 11:45:22.1903 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 11:45:22.1903 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 11:45:22.2178 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 11:45:22.2337 Info Configuration initialized.
+2025-04-26 11:45:22.5618 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 11:48:21.5971 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 11:48:21.5971 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 11:48:21.5971 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 11:48:21.6093 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 11:48:21.6093 Info Configuration initialized.
+2025-04-26 11:48:21.6670 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 11:48:21.7263 Info Shutdown() called. Logger closing...
+2025-04-26 11:48:21.7263 Info Closing old configuration.
+2025-04-26 11:48:21.7316 Info Logger has been closed down.
+2025-04-26 11:48:31.3962 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 11:48:31.3962 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 11:48:31.4043 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 11:48:31.4043 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 11:48:31.4043 Info Configuration initialized.
+2025-04-26 11:48:31.4720 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 11:48:31.4983 Info Shutdown() called. Logger closing...
+2025-04-26 11:48:31.4983 Info Closing old configuration.
+2025-04-26 11:48:31.4983 Info Logger has been closed down.
+2025-04-26 13:15:31.6272 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 13:15:31.6442 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 13:15:31.6665 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 13:15:31.7146 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:15:31.7259 Info Configuration initialized.
+2025-04-26 13:15:32.6076 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:33:49.9887 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 13:33:49.9980 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 13:33:49.9980 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 13:33:50.0275 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:33:50.0381 Info Configuration initialized.
+2025-04-26 13:33:50.4493 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:39:19.5233 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 13:39:19.5288 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 13:39:19.5288 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 13:39:19.5513 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:39:19.5609 Info Configuration initialized.
+2025-04-26 13:39:19.8428 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:42:10.9393 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 13:42:10.9393 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 13:42:10.9393 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 13:42:10.9631 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:42:10.9733 Info Configuration initialized.
+2025-04-26 13:42:11.2063 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:42:51.2164 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 13:42:51.2216 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 13:42:51.2216 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 13:42:51.2450 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:42:51.2561 Info Configuration initialized.
+2025-04-26 13:42:51.4830 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:44:27.2183 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 13:44:27.2225 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 13:44:27.2225 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 13:44:27.2405 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:44:27.2490 Info Configuration initialized.
+2025-04-26 13:44:27.4740 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:57:48.0695 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 13:57:48.0741 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 13:57:48.0816 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 13:57:48.0978 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:57:48.1070 Info Configuration initialized.
+2025-04-26 13:57:48.3895 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:58:20.2955 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 13:58:20.2998 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 13:58:20.2998 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 13:58:20.3205 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 13:58:20.3288 Info Configuration initialized.
+2025-04-26 13:58:20.5516 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 14:02:50.4608 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 14:02:50.4608 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 14:02:50.4693 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 14:02:50.4853 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 14:02:50.4853 Info Configuration initialized.
+2025-04-26 14:02:50.7647 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 14:25:48.5710 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 14:25:48.5778 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 14:25:48.5778 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 14:25:48.6189 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 14:25:48.6353 Info Configuration initialized.
+2025-04-26 14:25:48.9821 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 15:37:46.0248 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 15:37:46.0297 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 15:37:46.0297 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 15:37:46.0525 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 15:37:46.0614 Info Configuration initialized.
+2025-04-26 15:37:47.1853 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 15:44:02.1658 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 15:44:02.1717 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 15:44:02.1717 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 15:44:02.1948 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 15:44:02.2127 Info Configuration initialized.
+2025-04-26 15:44:02.5830 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 15:49:03.3041 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 15:49:03.3099 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 15:49:03.3099 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 15:49:03.3296 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 15:49:03.3383 Info Configuration initialized.
+2025-04-26 15:49:03.6202 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 15:52:15.7723 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-26 15:52:15.7823 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-26 15:52:15.7823 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-26 15:52:15.8036 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-26 15:52:15.8036 Info Configuration initialized.
+2025-04-26 15:52:16.0511 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config

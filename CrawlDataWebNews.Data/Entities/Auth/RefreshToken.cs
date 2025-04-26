@@ -14,16 +14,15 @@ namespace CrawlDataWebNews.Data.Entities.Auth
         [Required]
         public string Token { get; set; } = null!;
         [Required]
-        public DateTimeOffset Expires { get; set; }
-        public DateTimeOffset? Revoked { get; set; }
+        public DateTimeOffset ExpiredAt { get; set; }
         [MaxLength(255)]
-        public string? DeviceInfo { get; set; } 
+        public string? DeviceInfo { get; set; }
+        public string? SessionId { get; set; }
         [MaxLength(255)]
         public string? IpAddress { get; set; }
         [Required]
         public Guid UserId { get; set; }
+        public string UserName { get; set; }
         public User User { get; set; }
-        public bool IsExpired => DateTimeOffset.UtcNow >= Expires;
-        public bool IsActive => Revoked == null && !IsExpired;
     }
 }

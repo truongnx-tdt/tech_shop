@@ -10,5 +10,8 @@ namespace CrawlDataWebNews.Manufacture.CommonConst
     {
         public const string Login = "/api/login";
         public const string Register = "/api/register";
+        public const string TokenRefresh = "/api/token-refresh";
+        public const string Logout = "/api/logout";
+        public const string LogoutAll = "/api/logout-all";
     }
 }

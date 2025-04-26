@@ -4,6 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------"
 using System.ComponentModel.DataAnnotations;
+using CrawlDataWebNews.Data.Common;
 
 namespace CrawlDataWebNews.Data.Request
 {
@@ -20,6 +21,7 @@ namespace CrawlDataWebNews.Data.Request
 
         [Required]
         [MaxLength(255)]
+        [StrongPassword]
         public string Password { get; set; } = null!;
 
         [MaxLength(255)]

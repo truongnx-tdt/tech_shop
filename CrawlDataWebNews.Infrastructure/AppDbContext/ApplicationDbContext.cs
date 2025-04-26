@@ -151,7 +151,7 @@ namespace CrawlDataWebNews.Infrastructure.AppDbContext
                 return "Unknown";
             }
         }
-        //public string? GetUserId()
+        //public string? GetUser()
         //{
         //    try
         //    {

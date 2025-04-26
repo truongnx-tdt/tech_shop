@@ -5,7 +5,10 @@
 // -----------------------------------------------------------------------"
 
 using CrawlDataWebNews.Infrastructure.AppDbContext;
+using CrawlDataWebNews.Infrastructure.Repositories.RefreshToken;
+using CrawlDataWebNews.Infrastructure.Repositories.RefreshTokenRepo;
 using CrawlDataWebNews.Infrastructure.Repositories.UserRepo;
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CrawlDataWebNews.Infrastructure.UnitOfWork
@@ -14,6 +17,7 @@ namespace CrawlDataWebNews.Infrastructure.UnitOfWork
     {
         private readonly ApplicationDbContext _context;
         private UserRepository _userRepository;
+        private IRefreshTokenRepository _refreshTokenRepository;
         public UnitOfWork(ApplicationDbContext context) => _context = context;
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
@@ -39,6 +43,11 @@ namespace CrawlDataWebNews.Infrastructure.UnitOfWork
             get { return _userRepository ?? (_userRepository = new UserRepository(_context)); }
         }
 
+        public IRefreshTokenRepository RefreshToken
+        {
+            get { return _refreshTokenRepository ?? (_refreshTokenRepository = new RefreshTokenRepository(_context)); }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
@@ -55,6 +64,11 @@ namespace CrawlDataWebNews.Infrastructure.UnitOfWork
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public async Task BulkDeleteAsync<T>(ICollection<T> datas) where T : class
+        {
+            await _context.BulkDeleteAsync(datas).ConfigureAwait(false);
         }
     }
 }

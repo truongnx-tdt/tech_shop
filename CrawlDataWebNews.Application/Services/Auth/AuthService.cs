@@ -4,31 +4,40 @@
 //  </copyright>
 // -----------------------------------------------------------------------"
 
-using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+using CrawlDataWebNews.Application.Services.Token;
+using CrawlDataWebNews.Data.DTO;
 using CrawlDataWebNews.Data.Entities.Auth;
 using CrawlDataWebNews.Data.Request;
 using CrawlDataWebNews.Data.Response;
+using CrawlDataWebNews.Infrastructure.AppDbContext;
 using CrawlDataWebNews.Infrastructure.UnitOfWork;
 using CrawlDataWebNews.Manufacture;
 using CrawlDataWebNews.Manufacture.CommonConst;
 using CrawlDataWebNews.Manufacture.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CrawlDataWebNews.Application.Services.Auth
 {
     public class AuthService : BaseService, IAuthService
     {
         private readonly ILogger<AuthService> _logger;
-        public AuthService(IUnitOfWork unitOfWork, ILogger<AuthService> logger) : base(unitOfWork)
+        private readonly ClientInfoHelper _clientInfoHelper;
+        private readonly ITokenService _tokenService;
+        public AuthService(IUnitOfWork unitOfWork, ILogger<AuthService> logger, ClientInfoHelper clientInfoHelper, ITokenService tokenService) : base(unitOfWork)
         {
             _logger = logger;
+            _clientInfoHelper = clientInfoHelper;
+            _tokenService = tokenService;
         }
-
+        /// <summary>
+        /// Do login
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<LoginResponse> Login(LoginRequest model)
         {
             var rs = new LoginResponse();
@@ -36,9 +45,11 @@ namespace CrawlDataWebNews.Application.Services.Auth
             {
                 var userExists = await UnitOfWork.UserRepository
                                         .FindAsync(x => x.Username.Trim().ToLower() == model.Account.Trim() || x.Email.Trim().ToLower() == model.Account.Trim());
-
                 if (userExists != null && PasswordHasher.VerifyPassword(model.Password, userExists.PasswordHash))
                 {
+                    userExists.LastLogin = DateTimeOffset.UtcNow;
+                    string sessionId = Guid.NewGuid().ToString();
+
                     var authClaims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, userExists.Username),
@@ -46,9 +57,28 @@ namespace CrawlDataWebNews.Application.Services.Auth
                             new Claim(ClaimTypes.Email, userExists.Email),
                             new Claim("UserID", userExists.Id.ToString()),
                             new Claim("Roles", userExists.Role),
+                            new Claim("session_id", sessionId),
                         };
-                    string token = GenerateAccessToken(authClaims);
+                    string token = _tokenService.GenerateAccessToken(authClaims);
+                    string refreshToken = _tokenService.GenerateRefreshToken();
+                    #region save refresh token to db
+                    string device = _clientInfoHelper.GetUserAgent();
+                    string ip = _clientInfoHelper.GetClientIp();
+                    var ti = new RefreshToken
+                    {
+                        UserName = userExists.Username,
+                        UserId = userExists.Id,
+                        Token = refreshToken,
+                        ExpiredAt = DateTimeOffset.UtcNow.AddDays(AppSettings.RefreshTokenExperyTimeInDay),
+                        DeviceInfo = device,
+                        IpAddress = ip,
+                        SessionId = sessionId
+                    };
+                    UnitOfWork.RefreshToken.Add(ti);
+                    await UnitOfWork.CommitAsync();
+                    #endregion
                     rs.AccessToken = token;
+                    rs.RefeshToken = refreshToken;
                     rs.IsLogin = true;
                 }
             }
@@ -58,6 +88,69 @@ namespace CrawlDataWebNews.Application.Services.Auth
             }
             return rs;
         }
+
+        public async Task<(bool, string)> LogoutAllAsync(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return (false, "Logout failed!");
+            }
+            var rs = false;
+            var createStrategy = UnitOfWork.CreateExecutionStrategy();
+            await createStrategy.ExecuteAsync(async () =>
+            {
+                using (var db = await UnitOfWork.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        var allTokens = await UnitOfWork.RefreshToken.FindByAsyn(t => t.UserName == username);
+                        await UnitOfWork.BulkDeleteAsync<RefreshToken>(allTokens.ToList());
+                        rs = true;
+                        if (rs)
+                        {
+                            await db.CommitAsync();
+                        }
+                        else
+                        {
+                            await db.RollbackAsync();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        await db.RollbackAsync();
+                        _logger.LogError(ex.ToString());
+                        throw new UnauthorizedAccessException("Thiếu thông tin xác thực.");
+                    }
+                }
+            });
+            return (rs, rs ? "Logout!" : "Logout failed!");
+        }
+
+        public async Task<(bool, string)> LogoutAsync(string username, string sessionId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(sessionId))
+                    throw new UnauthorizedAccessException("Thiếu thông tin xác thực.");
+
+                var token = await UnitOfWork.RefreshToken.FindAsync(t =>
+                    t.UserName == username && t.SessionId == sessionId);
+
+                if (token != null)
+                {
+                    await UnitOfWork.RefreshToken.DeleteAsyn(token);
+                    await UnitOfWork.CommitAsync();
+                    return (true, "Logged out!");
+                }
+                return (false, "Logout false!");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw new UnauthorizedAccessException("Thiếu thông tin xác thực.");
+            }
+        }
+
         /// <summary>
         /// Function Service for create new account user
         /// </summary>
@@ -83,7 +176,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
                                 Email = model.Email,
                                 Username = model.Username,
                                 FullName = model.FullName,
-                                PasswordHash = model.Password,
+                                PasswordHash = passwordHash,
                             };
                             await UnitOfWork.UserRepository.AddAsyn(user);
                             rs = await UnitOfWork.CommitAsync();
@@ -113,29 +206,45 @@ namespace CrawlDataWebNews.Application.Services.Auth
             });
             return response;
         }
-
         /// <summary>
-        /// Function generate access token
+        /// funtion service for refresh token
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns>Access Token</returns>
-        private string GenerateAccessToken(IEnumerable<Claim> claims)
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public async Task<TokenModel> TokenRefresh(TokenModel model)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.SecretKey));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var tokenDescriptor = new SecurityTokenDescriptor()
+            try
             {
-                Issuer = AppSettings.ValidIssuer,
-                Audience = AppSettings.ValidAudience,
-                Expires = DateTime.UtcNow.AddMinutes(AppSettings.TokenExpiryTiemInMinutes),
-                SigningCredentials = credentials,
-                Subject = new ClaimsIdentity(claims)
-            };
+                var principal = _tokenService.GetPrincipalFromExpiredToken(model.AccessToken);
+                var username = principal.Identity?.Name;
+                var sessionId = principal.Claims.FirstOrDefault(c => c.Type == "session_id")?.Value;
 
-            var tokenHandle = new JwtSecurityTokenHandler();
-            var token = tokenHandle.CreateToken(tokenDescriptor);
-            return tokenHandle.WriteToken(token);
+                var tokenInfo = await UnitOfWork.RefreshToken.FindAsync(u => u.UserName == username && u.SessionId == sessionId);
+                if (tokenInfo == null
+                    || tokenInfo.Token != model.RefreshToken
+                    || tokenInfo.ExpiredAt <= DateTime.UtcNow)
+                {
+                    throw new Exception("Invalid refresh token. Please login again.");
+                }
+
+                var newAccessToken = _tokenService.GenerateAccessToken(principal.Claims);
+                var newRefreshToken = _tokenService.GenerateRefreshToken();
+
+                tokenInfo.Token = newRefreshToken;
+                await UnitOfWork.CommitAsync();
+
+                return (new TokenModel
+                {
+                    AccessToken = newAccessToken,
+                    RefreshToken = newRefreshToken
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

@@ -153,6 +153,16 @@ namespace CrawlDataWebNews.Infrastructure.Repositories._BaseRepo
             return await _context.Set<T>().AnyAsync();
         }
 
+        public T FirstOrDefault(Expression<Func<T, bool>> match)
+        {
+            return _context.Set<T>().FirstOrDefault(match);
+        }
+
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> match)
+        {
+            return await _context.Set<T>().FirstOrDefaultAsync(match).ConfigureAwait(false);
+        }
+
         private bool disposed = false;
         protected virtual void Dispose(bool disposing)
         {
@@ -171,6 +181,8 @@ namespace CrawlDataWebNews.Infrastructure.Repositories._BaseRepo
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+       
     }
 }
 

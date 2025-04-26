@@ -21,9 +21,11 @@ namespace CrawlDataWebNews.Infrastructure.Repositories._BaseRepo
         void Dispose();
 #pragma warning restore S2953 // Methods named "Dispose" should implement "IDisposable.Dispose"
         T Find(Expression<Func<T, bool>> match);
+        T FirstOrDefault(Expression<Func<T, bool>> match);
         ICollection<T> FindAll(Expression<Func<T, bool>> match);
         Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match);
         Task<T> FindAsync(Expression<Func<T, bool>> match);
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> match);
         IQueryable<T> FindBy(Expression<Func<T, bool>> predicate);
         Task<ICollection<T>> FindByAsyn(Expression<Func<T, bool>> predicate);
         T Get(object id);

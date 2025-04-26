@@ -10,13 +10,14 @@ using System.Text;
 using CrawlDataWebNews.Application.Services;
 using CrawlDataWebNews.Application.Services.Auth;
 using CrawlDataWebNews.Application.Services.Interfaces;
+using CrawlDataWebNews.Application.Services.Token;
 using CrawlDataWebNews.Infrastructure.AppDbContext;
 using CrawlDataWebNews.Infrastructure.UnitOfWork;
 using CrawlDataWebNews.Manufacture;
+using CrawlDataWebNews.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
@@ -53,7 +54,9 @@ try
     builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
     builder.Services.AddScoped<IGetDataService, GetDataService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddControllers();
+    builder.Services.AddHostedService<TokenCleanupService>();
 
     // NLog: Setup NLog for Dependency injection
     builder.Logging.ClearProviders();
@@ -99,12 +102,12 @@ try
     });
     #endregion
 
-    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
     var app = builder.Build();
 
+    // create singleton instance of DbInit to seed data and ensure database is created
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
@@ -126,7 +129,7 @@ try
         app.UseSwagger();
         app.UseSwaggerUI(options =>
         {
-            options.DefaultModelsExpandDepth(-1);
+            options.DefaultModelsExpandDepth(-1); // remove models from swagger UI
         });
         app.UseHsts();
     }
@@ -138,6 +141,7 @@ try
     app.UseCors(MyAllowSpecificOrigins);
 
     app.UseAuthentication();
+    app.UseMiddleware<SessionValidationMiddleware>();
     app.UseAuthorization();
 
     app.MapControllers();

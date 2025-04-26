@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using CrawlDataWebNews.Application.Services.Interfaces;
 using CrawlDataWebNews.Data.Common;
 using CrawlDataWebNews.Manufacture;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CrawlDataWebNews.Controllers
@@ -20,7 +21,8 @@ namespace CrawlDataWebNews.Controllers
         {
             _getDataService = getDataService;
         }
-       
+
+        [Authorize]
         [HttpGet("/api/version")]
         public IActionResult Version()
         {
