@@ -1,14 +1,23 @@
-﻿using System.Collections.Generic;
-using AngleSharp.Css;
-using AngleSharp.Io;
+﻿// "-----------------------------------------------------------------------
+//  <copyright file="GetDataService.cs" author=TDT>
+//      Copyright (c) TDT. All rights reserved.
+//  </copyright>
+// -----------------------------------------------------------------------"
+
 using CrawlDataWebNews.Application.Services.Interfaces;
 using CrawlDataWebNews.Data.Common;
 using CrawlDataWebNews.Data.Response;
+using Microsoft.Extensions.Logging;
 
 namespace CrawlDataWebNews.Application.Services
 {
     public class GetDataService : IGetDataService
     {
+        private readonly ILogger<GetDataService> _logger;
+        public GetDataService(ILogger<GetDataService> logger)
+        {
+            _logger = logger;
+        }
         public async Task<CategoriesResponse> GetByCtg(string url, string extension)
         {
             var uri = new Uri(url);

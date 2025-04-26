@@ -1,14 +1,31 @@
-﻿using System.IO.Compression;
+﻿// "-----------------------------------------------------------------------
+//  <copyright file="Helper.cs" author=TDT>
+//      Copyright (c) TDT. All rights reserved.
+//  </copyright>
+// -----------------------------------------------------------------------"
+
+using System.IO.Compression;
 using System.Net;
 using System.Net.Http.Headers;
 using AngleSharp;
 using AngleSharp.Html.Parser;
 using AngleSharp.Io;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Playwright;
+using NLog.Extensions.Logging;
 
 namespace CrawlDataWebNews.Data.Common
 {
     public class Helper
     {
+        private static readonly ILogger<Helper> _logger;
+        static Helper()
+        {
+            var loggerFactory = LoggerFactory.Create(cfg => cfg.AddNLog());
+            _logger = loggerFactory.CreateLogger<Helper>();
+        }
+
         private static HttpClient _httpClient;
         /// <summary>
         /// Get html from URL
@@ -40,26 +57,24 @@ namespace CrawlDataWebNews.Data.Common
                 if (!response.IsSuccessStatusCode)
                 {
                     // Nếu trạng thái không thành công (ví dụ: 404, 500), ghi lại lỗi và bỏ qua
-                    Console.WriteLine($"URL bị lỗi: {url}. Mã lỗi: {response.StatusCode}");
+                    _logger.LogError("URL bị lỗi" + url + " Mã lỗi:  " + response.StatusCode);
                     return null; // Trả về null nếu có lỗi
                 }
-
                 return response; // Trả về response nếu thành công
             }
             catch (HttpRequestException ex)
             {
                 // Xử lý lỗi khi không thể thực hiện yêu cầu
-                Console.WriteLine($"Lỗi khi yêu cầu URL: {url}. Lỗi: {ex.Message}");
+                _logger.LogError($"Lỗi khi yêu cầu URL: {url}. Lỗi: {ex.Message}");
             }
             catch (Exception ex)
             {
                 // Xử lý các lỗi khác
-                Console.WriteLine($"Lỗi không xác định khi yêu cầu URL: {url}. Lỗi: {ex.Message}");
+                _logger.LogError($"Lỗi không xác định khi yêu cầu URL: {url}. Lỗi: {ex.Message}");
             }
 
             return null; // Trả về null nếu có lỗi
         }
-
         /// <summary>
         ///  Phương thức để phân tích HTML và trích xuất các thẻ <a> có href bắt đầu bằng host hoặc "/"
         /// </summary>
@@ -68,7 +83,8 @@ namespace CrawlDataWebNews.Data.Common
         /// <returns></returns>
         public static async Task<List<string>> ExtractLinksAsync(string htmlContent, string host, string extension, bool isContain)
         {
-            var context = BrowsingContext.New(Configuration.Default);
+            var config = Configuration.Default.WithDefaultLoader();
+            var context = BrowsingContext.New(config);
             var document = await context.OpenAsync(req => req.Content(htmlContent));
             var links = new HashSet<string>(
                        document.QuerySelectorAll("a")
@@ -78,6 +94,27 @@ namespace CrawlDataWebNews.Data.Common
                    );
 
             return links.ToList();
+        }
+
+        public static async Task<List<string>> GetLinksWithPlaywright(string url, string host, string extension, bool isContain)
+        {
+            using var playwright = await Playwright.CreateAsync();
+            var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = true });
+            var page = await browser.NewPageAsync();
+
+            await page.GotoAsync(url);
+            var anchors = await page.QuerySelectorAllAsync("a");
+
+            var links = new List<string>();
+            foreach (var anchor in anchors)
+            {
+                var href = await anchor.GetAttributeAsync("href");
+                if (IsValidHref(href, host, extension, isContain))
+                    links.Add(href);
+            }
+
+            await browser.CloseAsync();
+            return links;
         }
         /// <summary>
         /// Kiểm tra href có hợp lệ hay không: bắt đầu với host hoặc "/" và không có phần mở rộng
@@ -111,7 +148,6 @@ namespace CrawlDataWebNews.Data.Common
                 return !href.Substring(href.LastIndexOf("/") + 1).Contains(".");
             }
         }
-
         public static async Task<string> ReadContentAsync(HttpResponseMessage response)
         {
             var contentEncoding = response.Content.Headers.ContentEncoding;
@@ -145,7 +181,6 @@ namespace CrawlDataWebNews.Data.Common
                 return await response.Content.ReadAsStringAsync();
             }
         }
-
         public static async Task<string> ExtractTitle(string htmlContent)
         {
             var document = await BrowsingContext.New().OpenAsync(req => req.Content(htmlContent));
@@ -178,7 +213,6 @@ namespace CrawlDataWebNews.Data.Common
             }
             return "";
         }
-
         public static async Task<string> ExtractContentHtml(string htmlContent)
         {
             var parser = new HtmlParser();

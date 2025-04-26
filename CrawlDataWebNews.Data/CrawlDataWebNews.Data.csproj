@@ -8,6 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Playwright" Version="1.51.0" />
+    <PackageReference Include="NLog" Version="5.4.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="5.4.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTO\" />
   </ItemGroup>
 
 </Project>

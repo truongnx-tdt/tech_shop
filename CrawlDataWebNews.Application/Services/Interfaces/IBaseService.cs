@@ -1,16 +1,13 @@
 ﻿// "-----------------------------------------------------------------------
-//  <copyright file="IGetDataService.cs" author=TDT>
+//  <copyright file="IBaseService.cs" author=TDT>
 //      Copyright (c) TDT. All rights reserved.
 //  </copyright>
 // -----------------------------------------------------------------------"
 
-using CrawlDataWebNews.Data.Response;
 
 namespace CrawlDataWebNews.Application.Services.Interfaces
 {
-    public interface IGetDataService 
+    public interface IBaseService
     {
-        Task<ICollection<CategoriesResponse>> GetData(string url);
-        Task<CategoriesResponse> GetByCtg(string url, string extension);
     }
 }

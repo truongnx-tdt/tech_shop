@@ -1,4 +1,10 @@
-﻿namespace CrawlDataWebNews.Data.Response
+﻿// "-----------------------------------------------------------------------
+//  <copyright file="CategoriesResponse.cs" author=TDT>
+//      Copyright (c) TDT. All rights reserved.
+//  </copyright>
+// -----------------------------------------------------------------------"
+
+namespace CrawlDataWebNews.Data.Response
 {
     public class CategoriesResponse
     {
