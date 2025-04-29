@@ -6,13 +6,14 @@
 
 using CrawlDataWebNews.Data.Entities.Auth;
 using CrawlDataWebNews.Infrastructure.UnitOfWork;
+using CrawlDataWebNews.Manufacture;
 
 namespace CrawlDataWebNews.Middleware
 {
     public class TokenCleanupService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly TimeSpan _interval = TimeSpan.FromHours(24); // clear refresh token one times per day
+        private readonly TimeSpan _interval = TimeSpan.FromHours(AppSettings.TimeToClearTokenByHours); // clear refresh token one times per day
         private readonly ILogger<TokenCleanupService> _logger;
         public TokenCleanupService(IServiceProvider serviceProvider, ILogger<TokenCleanupService> logger)
         {
@@ -42,7 +43,7 @@ namespace CrawlDataWebNews.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while cleaning up expired tokens.");
+                _logger.LogError(ex.Message);
             }
         }
     }

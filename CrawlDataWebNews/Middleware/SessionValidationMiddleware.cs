@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------"
 
 using CrawlDataWebNews.Infrastructure.UnitOfWork;
+using CrawlDataWebNews.Manufacture.CommonConst;
 
 namespace CrawlDataWebNews.Middleware
 {
@@ -22,7 +23,7 @@ namespace CrawlDataWebNews.Middleware
             var user = context.User;
             if (user?.Identity?.IsAuthenticated == true)
             {
-                var sessionId = user.Claims.FirstOrDefault(c => c.Type == "session_id")?.Value;
+                var sessionId = user.Claims.FirstOrDefault(c => c.Type == StringConst.ClaimSessionId)?.Value;
                 var username = user.Identity?.Name;
 
                 if (!string.IsNullOrEmpty(sessionId) && !string.IsNullOrEmpty(username))
@@ -32,8 +33,8 @@ namespace CrawlDataWebNews.Middleware
 
                     if (token == null)
                     {
-                        context.Response.StatusCode = 401;
-                        await context.Response.WriteAsync("Phiên đăng nhập đã hết hạn.");
+                        context.Response.StatusCode = ResponseStatusCode.Unauthorized;
+                        await context.Response.WriteAsync(StringConst.SessionLoginEx);
                         return;
                     }
                 }

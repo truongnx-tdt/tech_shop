@@ -55,9 +55,9 @@ namespace CrawlDataWebNews.Application.Services.Auth
                             new Claim(ClaimTypes.Name, userExists.Username),
                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                             new Claim(ClaimTypes.Email, userExists.Email),
-                            new Claim("UserID", userExists.Id.ToString()),
-                            new Claim("Roles", userExists.Role),
-                            new Claim("session_id", sessionId),
+                            new Claim(StringConst.ClaimUserId, userExists.Id.ToString()),
+                            new Claim(StringConst.ClaimRole, userExists.Role),
+                            new Claim(StringConst.ClaimSessionId, sessionId),
                         };
                     string token = _tokenService.GenerateAccessToken(authClaims);
                     string refreshToken = _tokenService.GenerateRefreshToken();
@@ -85,6 +85,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
+                throw new UnauthorizedAccessException(StringConst.Exception);
             }
             return rs;
         }
@@ -93,7 +94,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
         {
             if (string.IsNullOrEmpty(username))
             {
-                return (false, "Logout failed!");
+                return (false, StringConst.LogoutFailed);
             }
             var rs = false;
             var createStrategy = UnitOfWork.CreateExecutionStrategy();
@@ -104,7 +105,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
                     try
                     {
                         var allTokens = await UnitOfWork.RefreshToken.FindByAsyn(t => t.UserName == username);
-                        await UnitOfWork.BulkDeleteAsync<RefreshToken>(allTokens.ToList());
+                        await UnitOfWork.BulkDeleteAsync<RefreshToken>(allTokens.ToList()); // using bulk delete to improve performance, not need save change EF
                         rs = true;
                         if (rs)
                         {
@@ -119,11 +120,11 @@ namespace CrawlDataWebNews.Application.Services.Auth
                     {
                         await db.RollbackAsync();
                         _logger.LogError(ex.ToString());
-                        throw new UnauthorizedAccessException("Thiếu thông tin xác thực.");
+                        throw new UnauthorizedAccessException(StringConst.Exception);
                     }
                 }
             });
-            return (rs, rs ? "Logout!" : "Logout failed!");
+            return (rs, rs ? StringConst.Logout : StringConst.LogoutFailed);
         }
 
         public async Task<(bool, string)> LogoutAsync(string username, string sessionId)
@@ -131,7 +132,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
             try
             {
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(sessionId))
-                    throw new UnauthorizedAccessException("Thiếu thông tin xác thực.");
+                    throw new UnauthorizedAccessException(StringConst.MissInformation);
 
                 var token = await UnitOfWork.RefreshToken.FindAsync(t =>
                     t.UserName == username && t.SessionId == sessionId);
@@ -140,14 +141,14 @@ namespace CrawlDataWebNews.Application.Services.Auth
                 {
                     await UnitOfWork.RefreshToken.DeleteAsyn(token);
                     await UnitOfWork.CommitAsync();
-                    return (true, "Logged out!");
+                    return (true, StringConst.Logout);
                 }
-                return (false, "Logout false!");
+                return (false, StringConst.LogoutFailed);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                throw new UnauthorizedAccessException("Thiếu thông tin xác thực.");
+                throw new UnauthorizedAccessException(StringConst.Exception);
             }
         }
 
@@ -218,14 +219,14 @@ namespace CrawlDataWebNews.Application.Services.Auth
             {
                 var principal = _tokenService.GetPrincipalFromExpiredToken(model.AccessToken);
                 var username = principal.Identity?.Name;
-                var sessionId = principal.Claims.FirstOrDefault(c => c.Type == "session_id")?.Value;
+                var sessionId = principal.Claims.FirstOrDefault(c => c.Type == StringConst.ClaimSessionId)?.Value;
 
                 var tokenInfo = await UnitOfWork.RefreshToken.FindAsync(u => u.UserName == username && u.SessionId == sessionId);
                 if (tokenInfo == null
                     || tokenInfo.Token != model.RefreshToken
-                    || tokenInfo.ExpiredAt <= DateTime.UtcNow)
+                    || tokenInfo.ExpiredAt <= DateTimeOffset.UtcNow)
                 {
-                    throw new Exception("Invalid refresh token. Please login again.");
+                    throw new Exception(StringConst.InvalidToken);
                 }
 
                 var newAccessToken = _tokenService.GenerateAccessToken(principal.Claims);
@@ -243,7 +244,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                throw new Exception(ex.Message);
+                throw new Exception(StringConst.Exception);
             }
         }
     }

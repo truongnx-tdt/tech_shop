@@ -52,7 +52,7 @@ try
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddScoped<ClientInfoHelper>();
     builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
-    builder.Services.AddScoped<IGetDataService, GetDataService>();
+    //builder.Services.AddScoped<IGetDataService, GetDataService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddControllers();

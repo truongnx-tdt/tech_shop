@@ -301,3 +301,75 @@
 2025-04-26 15:52:15.8036 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
 2025-04-26 15:52:15.8036 Info Configuration initialized.
 2025-04-26 15:52:16.0511 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-29 09:27:28.9301 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 09:27:28.9422 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 09:27:28.9552 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 09:27:29.0014 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-29 09:27:29.0014 Info Configuration initialized.
+2025-04-29 09:27:31.4346 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-29 10:26:54.8665 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 10:26:54.9283 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 10:26:54.9283 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 10:26:54.9531 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-29 10:26:54.9631 Info Configuration initialized.
+2025-04-29 10:26:56.2876 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-29 10:28:08.3853 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 10:28:08.3930 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 10:28:08.3930 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 10:28:08.4206 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-29 10:28:08.4322 Info Configuration initialized.
+2025-04-29 10:28:08.7394 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\CrawlDataWebNews\CrawlDataWebNews\bin\Debug\net8.0\nlog.config
+2025-04-29 08:01:22.8756 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 08:01:22.8922 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 08:01:22.8977 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 08:01:22.9482 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 08:01:22.9844 Info Configuration initialized.
+2025-04-29 08:01:23.3685 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 08:02:55.0495 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 08:02:55.0643 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 08:02:55.0852 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 08:02:55.1083 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 08:02:55.1254 Info Configuration initialized.
+2025-04-29 08:02:55.5028 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 08:32:33.2121 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 08:32:33.2210 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 08:32:33.2260 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 08:32:33.2527 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 08:32:33.2613 Info Configuration initialized.
+2025-04-29 08:32:33.6449 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 08:59:50.1598 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 08:59:50.1812 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 08:59:50.1812 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 08:59:50.2174 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 08:59:50.2332 Info Configuration initialized.
+2025-04-29 08:59:50.5651 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:04:04.2912 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 09:04:04.3120 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 09:04:04.3249 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 09:04:04.3544 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:04:04.3691 Info Configuration initialized.
+2025-04-29 09:04:04.7207 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:04:41.9708 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 09:04:41.9857 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 09:04:42.0033 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 09:04:42.0661 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:04:42.0824 Info Configuration initialized.
+2025-04-29 09:04:42.4497 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:08:22.0530 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 09:08:22.0673 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 09:08:22.0854 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 09:08:22.1112 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:08:22.1210 Info Configuration initialized.
+2025-04-29 09:08:22.4288 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:09:42.7184 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 09:09:42.7387 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 09:09:42.7549 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 09:09:42.7910 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:09:42.8018 Info Configuration initialized.
+2025-04-29 09:09:43.2780 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:12:34.0844 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-04-29 09:12:34.1151 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-04-29 09:12:34.1293 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-04-29 09:12:34.1810 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
+2025-04-29 09:12:34.1994 Info Configuration initialized.
+2025-04-29 09:12:34.5777 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=/app/bin/Debug/net8.0/nlog.config
