@@ -6,6 +6,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using CrawlDataWebNews.Data.Entities.Abtractions;
+using CrawlDataWebNews.Manufacture.CommonConst;
 
 namespace CrawlDataWebNews.Data.Entities.Auth
 {
@@ -14,7 +15,7 @@ namespace CrawlDataWebNews.Data.Entities.Auth
         [Required]
         [MaxLength(100)]
         public string Username { get; set; } = null!;
-
+        public string? Picture { get; set; } 
         [Required]
         [MaxLength(255)]
         public string Email { get; set; } = null!;
@@ -30,7 +31,8 @@ namespace CrawlDataWebNews.Data.Entities.Auth
 
         [MaxLength(50)]
         public string Role { get; set; } = "user";
-
+        public string? GoogleId { get; set; }
+        public string LoginProvider { get; set; } = StringConst.LoginProviderDefault;
         public DateTimeOffset? LastLogin { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
     }

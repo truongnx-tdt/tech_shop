@@ -14,4 +14,8 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CrawlDataWebNews.Manufacture\CrawlDataWebNews.Manufacture.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -13,7 +13,7 @@ namespace CrawlDataWebNews.Infrastructure.UnitOfWork
     {
         public IUserRepository UserRepository { get; }
         public IRefreshTokenRepository RefreshToken { get; }
-        Task<bool> CommitAsync();
+        Task<bool> SaveChangesAsync();
         IExecutionStrategy CreateExecutionStrategy();
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task BulkDeleteAsync<T>(ICollection<T> datas) where T : class;

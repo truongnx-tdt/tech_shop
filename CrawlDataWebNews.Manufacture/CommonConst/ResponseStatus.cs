@@ -25,5 +25,6 @@ namespace CrawlDataWebNews.Manufacture.CommonConst
         public const string NotFound = "Data not found!";
         public const string Error = "Error!";
         public const string Unauthorized = "Unauthorized!";
+        public const string InternalServerError = "Internal Server Error!";
     }
 }

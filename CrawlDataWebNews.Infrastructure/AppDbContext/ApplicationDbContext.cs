@@ -29,7 +29,7 @@ namespace CrawlDataWebNews.Infrastructure.AppDbContext
             #region config entity for auth table
 
             modelBuilder.Entity<User>()
-           .HasIndex(u => u.Email)
+           .HasIndex(u => new { u.Email, u.LoginProvider })
            .IsUnique();
 
             modelBuilder.Entity<User>()

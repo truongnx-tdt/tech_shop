@@ -23,7 +23,7 @@ namespace CrawlDataWebNews.Infrastructure.UnitOfWork
         {
             return await _context.Database.BeginTransactionAsync();
         }
-        public async Task<bool> CommitAsync()
+        public async Task<bool> SaveChangesAsync()
         {
             var cm = await _context.SaveChangesAsync().ConfigureAwait(false);
             return cm != 0;

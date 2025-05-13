@@ -16,13 +16,6 @@ namespace CrawlDataWebNews.Controllers
     [ApiController]
     public class CrawlDataController : ControllerBase
     {
-        private readonly IGetDataService _getDataService;
-        public CrawlDataController(IGetDataService getDataService)
-        {
-            _getDataService = getDataService;
-        }
-
-        [Authorize]
         [HttpGet("/api/version")]
         public IActionResult Version()
         {

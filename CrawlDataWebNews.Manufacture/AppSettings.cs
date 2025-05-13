@@ -28,5 +28,7 @@ namespace CrawlDataWebNews.Manufacture
         public static string Salt => configuration["Salt"] ?? "";
         public static int RefreshTokenExperyTimeInDay => (int)Convert.ToInt64(configuration["RefreshToken:ExpiryTimeInDay"]);
         public static int TimeToClearTokenByHours => (int)Convert.ToInt64(configuration["RefreshToken:TimeToClearTokenByHours"]);
+
+        public static string GoogleUserInfoUrl => configuration["Authorization:Google:UserInfoUrl"]!;
     }
 }

@@ -16,9 +16,11 @@ using CrawlDataWebNews.Infrastructure.UnitOfWork;
 using CrawlDataWebNews.Manufacture;
 using CrawlDataWebNews.Manufacture.CommonConst;
 using CrawlDataWebNews.Manufacture.Utils;
-using Microsoft.AspNetCore.Http;
+using Google.Apis.Auth;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace CrawlDataWebNews.Application.Services.Auth
 {
@@ -44,43 +46,27 @@ namespace CrawlDataWebNews.Application.Services.Auth
             try
             {
                 var userExists = await UnitOfWork.UserRepository
-                                        .FindAsync(x => x.Username.Trim().ToLower() == model.Account.Trim() || x.Email.Trim().ToLower() == model.Account.Trim());
+                                        .FindAsync(x => (x.Username.Trim().ToLower() == model.Account.Trim() || x.Email.Trim().ToLower() == model.Account.Trim()) && x.LoginProvider == StringConst.LoginProviderDefault);
                 if (userExists != null && PasswordHasher.VerifyPassword(model.Password, userExists.PasswordHash))
                 {
+                    if (!userExists.IsActive)
+                    {
+                        rs.Message = StringConst.UserNotActive;
+                        return rs;
+                    }
                     userExists.LastLogin = DateTimeOffset.UtcNow;
                     string sessionId = Guid.NewGuid().ToString();
 
-                    var authClaims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name, userExists.Username),
-                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                            new Claim(ClaimTypes.Email, userExists.Email),
-                            new Claim(StringConst.ClaimUserId, userExists.Id.ToString()),
-                            new Claim(StringConst.ClaimRole, userExists.Role),
-                            new Claim(StringConst.ClaimSessionId, sessionId),
-                        };
+                    var authClaims = CreateClams(userExists, sessionId);
                     string token = _tokenService.GenerateAccessToken(authClaims);
                     string refreshToken = _tokenService.GenerateRefreshToken();
-                    #region save refresh token to db
-                    string device = _clientInfoHelper.GetUserAgent();
-                    string ip = _clientInfoHelper.GetClientIp();
-                    var ti = new RefreshToken
-                    {
-                        UserName = userExists.Username,
-                        UserId = userExists.Id,
-                        Token = refreshToken,
-                        ExpiredAt = DateTimeOffset.UtcNow.AddDays(AppSettings.RefreshTokenExperyTimeInDay),
-                        DeviceInfo = device,
-                        IpAddress = ip,
-                        SessionId = sessionId
-                    };
-                    UnitOfWork.RefreshToken.Add(ti);
-                    await UnitOfWork.CommitAsync();
-                    #endregion
+                    await SaveRefeshToken(userExists, refreshToken, sessionId);
                     rs.AccessToken = token;
                     rs.RefeshToken = refreshToken;
-                    rs.IsLogin = true;
+                    rs.Message = StringConst.LoginIn;
+                    return rs;
                 }
+                rs.Message = StringConst.UserOrPwdIncorrect;
             }
             catch (Exception ex)
             {
@@ -140,7 +126,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
                 if (token != null)
                 {
                     await UnitOfWork.RefreshToken.DeleteAsyn(token);
-                    await UnitOfWork.CommitAsync();
+                    await UnitOfWork.SaveChangesAsync();
                     return (true, StringConst.Logout);
                 }
                 return (false, StringConst.LogoutFailed);
@@ -168,7 +154,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
                 {
                     try
                     {
-                        var userExists = await UnitOfWork.UserRepository.FindAsync(x => x.Username.Trim().ToLower() == model.Username.Trim().ToLower() || (x.Email.Trim().ToLower() == model.Email.Trim().ToLower()));
+                        var userExists = await UnitOfWork.UserRepository.FindAsync(x => (x.Username.Trim().ToLower() == model.Username.Trim().ToLower() || (x.Email.Trim().ToLower() == model.Email.Trim().ToLower())) && x.LoginProvider == StringConst.LoginProviderDefault);
                         if (userExists == null)
                         {
                             var passwordHash = PasswordHasher.HashPassword(model.Password);
@@ -180,7 +166,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
                                 PasswordHash = passwordHash,
                             };
                             await UnitOfWork.UserRepository.AddAsyn(user);
-                            rs = await UnitOfWork.CommitAsync();
+                            rs = await UnitOfWork.SaveChangesAsync();
                             if (rs)
                             {
                                 response.Item1 = ResponseStatusCode.Success;
@@ -233,7 +219,7 @@ namespace CrawlDataWebNews.Application.Services.Auth
                 var newRefreshToken = _tokenService.GenerateRefreshToken();
 
                 tokenInfo.Token = newRefreshToken;
-                await UnitOfWork.CommitAsync();
+                await UnitOfWork.SaveChangesAsync();
 
                 return (new TokenModel
                 {
@@ -247,5 +233,102 @@ namespace CrawlDataWebNews.Application.Services.Auth
                 throw new Exception(StringConst.Exception);
             }
         }
+        private List<Claim> CreateClams(User userExists, string sessionId)
+        {
+            return new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name, userExists.Username),
+                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                            new Claim(ClaimTypes.Email, userExists.Email),
+                            new Claim(StringConst.ClaimUserId, userExists.Id.ToString()),
+                            new Claim(StringConst.ClaimRole, userExists.Role),
+                            new Claim(StringConst.ClaimSessionId, sessionId),
+                        };
+        }
+        private async Task SaveRefeshToken(User userExists, string refreshToken, string sessionId)
+        {
+            #region save refresh token to db
+            string device = _clientInfoHelper.GetUserAgent();
+            string ip = _clientInfoHelper.GetClientIp();
+            var ti = new RefreshToken
+            {
+                UserName = userExists.Username,
+                UserId = userExists.Id,
+                Token = refreshToken,
+                ExpiredAt = DateTimeOffset.UtcNow.AddDays(AppSettings.RefreshTokenExperyTimeInDay),
+                DeviceInfo = device,
+                IpAddress = ip,
+                SessionId = sessionId
+            };
+            UnitOfWork.RefreshToken.Add(ti);
+            await UnitOfWork.SaveChangesAsync();
+            #endregion
+        }
+        #region handle login google
+        public async Task<LoginResponse> GoogleLogin([FromBody] string idToken)
+        {
+            try
+            {
+                var payload = await ValidateGoogleTokenAsync(idToken);
+                var user = await UnitOfWork.UserRepository
+                    .FirstOrDefaultAsync(u => u.Email == payload.Email && u.LoginProvider == StringConst.LoginProviderGG);
+                if (user == null)
+                {
+                    user = new User
+                    {
+                        Email = payload.Email,
+                        Username = payload.Email,
+                        FullName = payload.Name,
+                        Picture = payload.Picture,
+                        GoogleId = payload.Subject,
+                        PasswordHash = "",
+                        LoginProvider = StringConst.LoginProviderGG,
+                        IsActive = true
+                    };
+                    await UnitOfWork.UserRepository.AddAsyn(user);
+                    await UnitOfWork.SaveChangesAsync();
+                }
+
+                // Sinh JWT hoặc Refresh Token như thông thường
+                string sessionId = Guid.NewGuid().ToString();
+
+                var authClaims = CreateClams(user, sessionId);
+                string token = _tokenService.GenerateAccessToken(authClaims);
+                string refreshToken = _tokenService.GenerateRefreshToken();
+                
+                await SaveRefeshToken(user, refreshToken, sessionId);
+
+                return new LoginResponse() { AccessToken = token, RefeshToken = refreshToken, Message = StringConst.LoginIn };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                throw;
+            }
+        }
+        private async Task<GoogleJsonWebSignature.Payload> ValidateGoogleTokenAsync(string idToken)
+        {
+            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
+
+            if (payload == null || string.IsNullOrEmpty(payload.Email))
+                throw new UnauthorizedAccessException("Invalid Google Token");
+
+            return payload;
+        }
+        private async Task<User> GetGoogleUserProfileAsync(string accessToken)
+        {
+            using var httpClient = new HttpClient();
+
+            // Send GET request to Google UserInfo API
+            var response = await httpClient.GetAsync($"{AppSettings.GoogleUserInfoUrl}?access_token={accessToken}");
+            response.EnsureSuccessStatusCode();
+
+            // Parse the JSON response
+            var content = await response.Content.ReadAsStringAsync();
+            var userProfile = JsonConvert.DeserializeObject<User>(content);
+
+            return userProfile!;
+        }
+        #endregion
     }
 }

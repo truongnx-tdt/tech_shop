@@ -7,8 +7,8 @@ namespace CrawlDataWebNews.Data.Response
 {
     public class LoginResponse
     {
-        public bool IsLogin { get; set; } = false;
         public string? AccessToken { get; set; }
         public string? RefeshToken { get; set; }
+        public string? Message { get; set; }
     }
 }

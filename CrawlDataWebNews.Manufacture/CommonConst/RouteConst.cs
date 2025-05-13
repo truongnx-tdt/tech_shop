@@ -9,6 +9,7 @@ namespace CrawlDataWebNews.Manufacture.CommonConst
     public static class RouteConst
     {
         public const string Login = "/api/login";
+        public const string LoginGG = "/api/auth/google-login";
         public const string Register = "/api/register";
         public const string TokenRefresh = "/api/token-refresh";
         public const string Logout = "/api/logout";

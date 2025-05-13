@@ -9,6 +9,8 @@ namespace CrawlDataWebNews.Manufacture.CommonConst
     {
         #region Claim
         public static string ClaimSessionId = "session_id";
+        public static string LoginProviderDefault = "WebApp";
+        public static string LoginProviderGG = "Google";
         public static string ClaimRole = "Roles";
         public static string ClaimUserId = "UserID";
         #endregion
@@ -16,12 +18,15 @@ namespace CrawlDataWebNews.Manufacture.CommonConst
         #region Message
         public static string SessionLoginEx = "Session login expired!";
         public static string SessionLogin = "Session login!";
-        public static string LoginIn = "Login in!";
+        public static string LoginIn = "Login Successfully!";
         public static string Logout = "Login out!";
         public static string LoginFailed = "Login failed!";
         public static string LogoutFailed = "Logout failed!";
         public static string MissInformation = "Missing information!";
         public static string InvalidToken = "Invalid token. Please login again.";
+        public static string UserNotActive = "User not active!";
+        public static string UserNotFound = "User not found!";
+        public static string UserOrPwdIncorrect = "User or password incorrect!";
         #endregion
         public static string Exception = "Server error, please call to manager!";
     }

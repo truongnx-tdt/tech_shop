@@ -6,14 +6,17 @@
 
 using System;
 using System.IO.Compression;
+using System.Net;
 using System.Text;
 using CrawlDataWebNews.Application.Services;
 using CrawlDataWebNews.Application.Services.Auth;
 using CrawlDataWebNews.Application.Services.Interfaces;
 using CrawlDataWebNews.Application.Services.Token;
+using CrawlDataWebNews.Data.Response;
 using CrawlDataWebNews.Infrastructure.AppDbContext;
 using CrawlDataWebNews.Infrastructure.UnitOfWork;
 using CrawlDataWebNews.Manufacture;
+using CrawlDataWebNews.Manufacture.CommonConst;
 using CrawlDataWebNews.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -52,10 +55,13 @@ try
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddScoped<ClientInfoHelper>();
     builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
-    //builder.Services.AddScoped<IGetDataService, GetDataService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
-    builder.Services.AddControllers();
+    builder.Services.AddControllers().AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
     builder.Services.AddHostedService<TokenCleanupService>();
 
     // NLog: Setup NLog for Dependency injection
@@ -104,7 +110,16 @@ try
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-
+    #region add miniprofiler
+    // Add services to the container.
+    builder.Services.AddMemoryCache(); // add the memory cache to the service collection
+                                       // Add miniprofilter : write speed time query sql
+                                       // More more about config miniprofiler at https://ilovedotnet.org/blogs/profiling-webapi-with-mini-profiler/
+    builder.Services.AddMiniProfiler(options =>
+    {
+        options.RouteBasePath = "/profiler"; // /profiler/results-index
+    }).AddEntityFramework();
+    #endregion
     var app = builder.Build();
 
     // create singleton instance of DbInit to seed data and ensure database is created
@@ -127,6 +142,7 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
+        app.UseMiniProfiler();
         app.UseSwaggerUI(options =>
         {
             options.DefaultModelsExpandDepth(-1); // remove models from swagger UI
@@ -137,11 +153,33 @@ try
     app.UseHttpsRedirection();
     app.UseStaticFiles();
     app.UseRouting();
-
     app.UseCors(MyAllowSpecificOrigins);
 
     app.UseAuthentication();
+    // validate session by user claims and session id
     app.UseMiddleware<SessionValidationMiddleware>();
+    app.Use(async (context, next) =>
+    {
+        await next();
+
+        if (context.Response.StatusCode == (int)HttpStatusCode.NotFound && context.GetEndpoint() == null)
+        {
+            await context.Response.WriteAsJsonAsync(new ApiResponse<object>()
+            {
+                Status = (int)HttpStatusCode.NotFound,
+                Message = ResponseStatusName.NotFound,
+            });
+        }
+
+        if (context.Response.StatusCode == (int)HttpStatusCode.InternalServerError)
+        {
+            await context.Response.WriteAsJsonAsync(new ApiResponse<object>()
+            {
+                Status = (int)HttpStatusCode.InternalServerError,
+                Message = ResponseStatusName.InternalServerError,
+            });
+        }
+    });
     app.UseAuthorization();
 
     app.MapControllers();

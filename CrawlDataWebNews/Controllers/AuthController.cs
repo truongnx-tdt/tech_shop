@@ -13,6 +13,7 @@ using CrawlDataWebNews.Data.DTO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using CrawlDataWebNews.Infrastructure.UnitOfWork;
+using CrawlDataWebNews.Data.Entities.Auth;
 
 namespace CrawlDataWebNews.Controllers
 {
@@ -39,11 +40,7 @@ namespace CrawlDataWebNews.Controllers
                 return new ApiResponse<LoginResponse>() { Status = 400, Message = ResponseStatusName.UnSuccess, Error = ModelState };
             }
             var rs = await _authService.Login(request);
-            if (rs.IsLogin)
-            {
-                return new ApiResponse<LoginResponse>() { Status = ResponseStatusCode.Success, Data = rs, Message = ResponseStatusName.Success };
-            }
-            return new ApiResponse<LoginResponse>() { Status = ResponseStatusCode.UnSuccess, Message = "Incorrect Account!" };
+            return new ApiResponse<LoginResponse>() { Status = ResponseStatusCode.Success, Data = rs, Message = rs.Message };
         }
         /// <summary>
         /// Register API
@@ -124,5 +121,20 @@ namespace CrawlDataWebNews.Controllers
                 Message = rs.Item2
             };
         }
+
+        [HttpPost(RouteConst.LoginGG)]
+        public async Task<ActionResult<ApiResponse<LoginResponse>>> GoogleLogin([FromBody] string idToken)
+        {
+            try
+            {
+                var rs = await _authService.GoogleLogin(idToken);
+                return Ok(new ApiResponse<LoginResponse>() { Status = 200, Data = rs, Message = rs.Message });
+            }
+            catch (Exception)
+            {
+                return BadRequest(new ApiResponse<LoginResponse>() { Status = 400, Message = StringConst.Exception });
+            }
+        }
+
     }
 }
