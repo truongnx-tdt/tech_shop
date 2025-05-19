@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------"
 
 using CrawlDataWebNews.Infrastructure.AppDbContext;
+using CrawlDataWebNews.Infrastructure.Repositories.LanguageRepo;
 using CrawlDataWebNews.Infrastructure.Repositories.RefreshToken;
 using CrawlDataWebNews.Infrastructure.Repositories.RefreshTokenRepo;
 using CrawlDataWebNews.Infrastructure.Repositories.UserRepo;
@@ -18,6 +19,8 @@ namespace CrawlDataWebNews.Infrastructure.UnitOfWork
         private readonly ApplicationDbContext _context;
         private UserRepository _userRepository;
         private IRefreshTokenRepository _refreshTokenRepository;
+        private LanguageRepository _languageRepository;
+        private ILanguageTranslationRepository _languageTranslationRepository;
         public UnitOfWork(ApplicationDbContext context) => _context = context;
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
@@ -46,6 +49,16 @@ namespace CrawlDataWebNews.Infrastructure.UnitOfWork
         public IRefreshTokenRepository RefreshToken
         {
             get { return _refreshTokenRepository ?? (_refreshTokenRepository = new RefreshTokenRepository(_context)); }
+        }
+
+        public ILanguageRepository Language
+        {
+            get { return _languageRepository ?? (_languageRepository = new LanguageRepository(_context)); }
+        }
+
+        public ILanguageTranslationRepository LanguageTranslation
+        {
+            get { return _languageTranslationRepository ?? (_languageTranslationRepository = new LanguageTranslation(_context)); }
         }
 
         protected virtual void Dispose(bool disposing)

@@ -26,4 +26,8 @@
     <ProjectReference Include="..\CrawlDataWebNews.Manufacture\CrawlDataWebNews.Manufacture.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Language\" />
+  </ItemGroup>
+
 </Project>

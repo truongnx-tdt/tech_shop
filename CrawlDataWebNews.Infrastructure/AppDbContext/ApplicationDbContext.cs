@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------"
 
 using CrawlDataWebNews.Data.Entities.Auth;
+using CrawlDataWebNews.Data.Entities.Languages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,8 @@ namespace CrawlDataWebNews.Infrastructure.AppDbContext
 
         DbSet<User> Users { get; set; }
         DbSet<RefreshToken> RefreshTokens { get; set; }
+        DbSet<Language> Languages { get; set; }
+        DbSet<LanguageTranslation> LanguageTranslations { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -40,6 +43,20 @@ namespace CrawlDataWebNews.Infrastructure.AppDbContext
                 .HasOne(rt => rt.User)
                 .WithMany(u => u.RefreshTokens)
                 .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Language>()
+                .HasIndex(l => l.Id)
+                .IsUnique();
+
+            modelBuilder.Entity<LanguageTranslation>()
+                .HasIndex(lt => new { lt.LanguageCode, lt.Key })
+                .IsUnique();
+
+            modelBuilder.Entity<LanguageTranslation>()
+                .HasOne(lt => lt.Language)
+                .WithMany(l => l.Translations)
+                .HasForeignKey(lt => lt.LanguageCode)
                 .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }
