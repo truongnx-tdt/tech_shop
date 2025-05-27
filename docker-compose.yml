@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+    techshop-api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "5000:8080"
+        networks:
+            - mynetwork
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Production
+            - ASPNETCORE_URLS=http://*:8080
+        depends_on:
+            - my-postgres
+
+    my-postgres:
+        image: postgres:latest
+        environment:
+            - POSTGRES_USER=tdt
+            - POSTGRES_PASSWORD=123123
+            - POSTGRES_DB=postgres
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        networks:
+            - mynetwork
+
+networks:
+    mynetwork:
+        driver: bridge
+
+volumes:
+    postgres_data:

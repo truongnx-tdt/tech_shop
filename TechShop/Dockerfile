@@ -5,30 +5,38 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
+#EXPOSE 8081
 
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["AuthMS/AuthMS.csproj", "AuthMS/"]
-COPY ["AuthMS.Application/AuthMS.Application.csproj", "AuthMS.Application/"]
-COPY ["AuthMS.Data/AuthMS.Data.csproj", "AuthMS.Data/"]
-COPY ["AuthMS.Infrastructure/AuthMS.Infrastructure.csproj", "AuthMS.Infrastructure/"]
-COPY ["AuthMS.Manufacture/AuthMS.Manufacture.csproj", "AuthMS.Manufacture/"]
-RUN dotnet restore "./AuthMS/AuthMS.csproj"
+COPY ["TechShop/TechShop.csproj", "TechShop/"]
+COPY ["TechShop.Application/TechShop.Application.csproj", "TechShop.Application/"]
+COPY ["TechShop.Data/TechShop.Data.csproj", "TechShop.Data/"]
+COPY ["TechShop.Infrastructure/TechShop.Infrastructure.csproj", "TechShop.Infrastructure/"]
+COPY ["TechShop.Manufacture/TechShop.Manufacture.csproj", "TechShop.Manufacture/"]
+RUN dotnet restore "./TechShop/TechShop.csproj"
 COPY . .
-WORKDIR "/src/AuthMS"
-RUN dotnet build "./AuthMS.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/TechShop"
+RUN dotnet build "./TechShop.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./AuthMS.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./TechShop.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "AuthMS.dll"]
+
+# Copy file configuration production 
+COPY TechShop/appsettings.Production.json ./appsettings.json
+
+# Setup environtment for production
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:8080
+
+ENTRYPOINT ["dotnet", "TechShop.dll"]

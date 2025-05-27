@@ -5,30 +5,38 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
+#EXPOSE 8081
 
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["CrawlDataWebNews/CrawlDataWebNews.csproj", "CrawlDataWebNews/"]
-COPY ["CrawlDataWebNews.Application/CrawlDataWebNews.Application.csproj", "CrawlDataWebNews.Application/"]
-COPY ["CrawlDataWebNews.Data/CrawlDataWebNews.Data.csproj", "CrawlDataWebNews.Data/"]
-COPY ["CrawlDataWebNews.Infrastructure/CrawlDataWebNews.Infrastructure.csproj", "CrawlDataWebNews.Infrastructure/"]
-COPY ["CrawlDataWebNews.Manufacture/CrawlDataWebNews.Manufacture.csproj", "CrawlDataWebNews.Manufacture/"]
-RUN dotnet restore "./CrawlDataWebNews/CrawlDataWebNews.csproj"
+COPY ["TechShop/TechShop.csproj", "TechShop/"]
+COPY ["TechShop.Application/TechShop.Application.csproj", "TechShop.Application/"]
+COPY ["TechShop.Data/TechShop.Data.csproj", "TechShop.Data/"]
+COPY ["TechShop.Infrastructure/TechShop.Infrastructure.csproj", "TechShop.Infrastructure/"]
+COPY ["TechShop.Manufacture/TechShop.Manufacture.csproj", "TechShop.Manufacture/"]
+RUN dotnet restore "./TechShop/TechShop.csproj"
 COPY . .
-WORKDIR "/src/CrawlDataWebNews"
-RUN dotnet build "./CrawlDataWebNews.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/TechShop"
+RUN dotnet build "./TechShop.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./CrawlDataWebNews.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./TechShop.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "CrawlDataWebNews.dll"]
+
+# Copy file configuration production 
+COPY TechShop/appsettings.Production.json ./appsettings.json
+
+# Setup environtment for production
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://+:8080
+
+ENTRYPOINT ["dotnet", "TechShop.dll"]
