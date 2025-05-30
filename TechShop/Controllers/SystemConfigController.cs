@@ -116,7 +116,7 @@ namespace TechShop.Controllers
         [HttpPost]
         [Route(RouteConst.AddLanguageTranslations)]
         [Authorize]
-        public async Task<ActionResult<ApiResponse<object>>> AddLanguageTranslations(List<LanguageTranslation> request)
+        public async Task<ActionResult<ApiResponse<object>>> AddLanguageTranslations(List<LanguageTranslationDTO> request)
         {
             if (request == null || !request.Any())
             {

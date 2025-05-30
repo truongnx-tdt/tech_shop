@@ -27,6 +27,7 @@ using TechShop.Data.Entities.Languages;
 using TechShop.Data.Request;
 using TechShop.Data.Mapper.LanguageMapper;
 using Microsoft.AspNetCore.Mvc;
+using TechShop.Data.DTO;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -64,6 +65,7 @@ try
     builder.Services.AddScoped<ILanguageTranslationService, LanguageTranslationSerivce>();
     // mapping config
     builder.Services.AddScoped<IMapper<Language, LanguageRequest>, LanguageMapper>();
+    builder.Services.AddScoped<IMapper<LanguageTranslation, LanguageTranslationDTO>, LanguageTranslationMapper>();
 
     builder.Services.AddControllers().AddJsonOptions(options =>
     {

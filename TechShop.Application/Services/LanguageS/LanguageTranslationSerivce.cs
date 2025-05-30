@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------"
 
 using Microsoft.AspNetCore.Http;
+using TechShop.Data.DTO;
 using TechShop.Data.Entities.Languages;
 using TechShop.Infrastructure.UnitOfWork;
 
@@ -17,7 +18,7 @@ namespace TechShop.Application.Services.LanguageS
 
         }
 
-        public Task<bool> AddMultiAsync(List<LanguageTranslation> request)
+        public Task<bool> AddMultiAsync(List<LanguageTranslationDTO> request)
         {
             throw new NotImplementedException();
         }
@@ -32,14 +33,14 @@ namespace TechShop.Application.Services.LanguageS
             throw new NotImplementedException();
         }
 
-        public Task<bool> EditMultiAsync(List<LanguageTranslation> request)
+        public Task<bool> EditMultiAsync(List<LanguageTranslationDTO> request)
         {
             throw new NotImplementedException();
         }
 
         public async Task<List<LanguageTranslation>> GetAsync(string languageCode, string module)
         {
-            var rs = await UnitOfWork.LanguageTranslation.FindAllAsync(x => x.LanguageCode == languageCode && (string.IsNullOrWhiteSpace(module) || x.Module == module));
+            var rs = await UnitOfWork.LanguageTranslation.FindAllAsync(x => x.LanguageCode == languageCode && (string.IsNullOrWhiteSpace(module) ? x.Module == "sys" : x.Module == module));
             return rs.ToList();
         }
 

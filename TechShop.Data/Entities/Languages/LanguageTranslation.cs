@@ -17,7 +17,7 @@ namespace TechShop.Data.Entities.Languages
         [Required]
         public string Key { get; set; } = null!;
         public string? Value { get; set; }
-        public string? Module { get; set; }
+        public string Module { get; set; } = "sys";
         [Required]
         public Language Language { get; set; } = null!;
     }

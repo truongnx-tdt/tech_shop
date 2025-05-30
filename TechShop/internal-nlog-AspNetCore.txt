@@ -809,3 +809,21 @@
 2025-05-30 16:55:16.3813 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\TechShop\TechShop\bin\Debug\net8.0\nlog.config
 2025-05-30 16:55:16.4188 Info Configuration initialized.
 2025-05-30 16:55:17.1562 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\TechShop\TechShop\bin\Debug\net8.0\nlog.config
+2025-05-30 17:19:02.9626 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-05-30 17:19:02.9683 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-05-30 17:19:02.9683 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-05-30 17:19:02.9683 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\TechShop\TechShop\bin\Debug\net8.0\nlog.config
+2025-05-30 17:19:02.9862 Info Configuration initialized.
+2025-05-30 17:19:03.1883 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\TechShop\TechShop\bin\Debug\net8.0\nlog.config
+2025-05-30 17:19:03.2485 Info Shutdown() called. Logger closing...
+2025-05-30 17:19:03.2485 Info Closing old configuration.
+2025-05-30 17:19:03.2741 Info Logger has been closed down.
+2025-05-30 17:19:23.0145 Info Registered target NLog.Targets.FileTarget(Name=ownFile-web)
+2025-05-30 17:19:23.0145 Info Registered target NLog.Targets.ConsoleTarget(Name=lifetimeConsole)
+2025-05-30 17:19:23.0145 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.4.0.3182. Product version: 5.4.0+4d45d445601312040107cbe2ac00e56c4bf4a60b. GlobalAssemblyCache: False
+2025-05-30 17:19:23.0145 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\TechShop\TechShop\bin\Debug\net8.0\nlog.config
+2025-05-30 17:19:23.0326 Info Configuration initialized.
+2025-05-30 17:19:23.0838 Info Validating config: TargetNames=lifetimeConsole, ownFile-web, ConfigItems=32, FilePath=D:\.NET\TechShop\TechShop\bin\Debug\net8.0\nlog.config
+2025-05-30 17:19:23.1087 Info Shutdown() called. Logger closing...
+2025-05-30 17:19:23.1087 Info Closing old configuration.
+2025-05-30 17:19:23.1087 Info Logger has been closed down.
