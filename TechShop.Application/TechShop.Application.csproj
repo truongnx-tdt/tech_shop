@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\Language\**" />
+    <EmbeddedResource Remove="Services\Language\**" />
+    <None Remove="Services\Language\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AngleSharp" Version="1.2.0" />
     <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.0" />
@@ -24,10 +30,6 @@
     <ProjectReference Include="..\TechShop.Data\TechShop.Data.csproj" />
     <ProjectReference Include="..\TechShop.Infrastructure\TechShop.Infrastructure.csproj" />
     <ProjectReference Include="..\TechShop.Manufacture\TechShop.Manufacture.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\Language\" />
   </ItemGroup>
 
 </Project>

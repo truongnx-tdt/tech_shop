@@ -37,6 +37,5 @@ COPY TechShop/appsettings.Production.json ./appsettings.json
 
 # Setup environtment for production
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://+:8080
 
 ENTRYPOINT ["dotnet", "TechShop.dll"]

@@ -10,7 +10,6 @@ services:
             - mynetwork
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
-            - ASPNETCORE_URLS=http://*:8080
         depends_on:
             - my-postgres
 

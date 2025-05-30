@@ -21,6 +21,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 using NLog.Web;
+using TechShop.Application.Services.LanguageS;
+using TechShop.Data.Mapper;
+using TechShop.Data.Entities.Languages;
+using TechShop.Data.Request;
+using TechShop.Data.Mapper.LanguageMapper;
+using Microsoft.AspNetCore.Mvc;
 
 // Early init of NLog to allow startup and exception logging, before host is built
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
@@ -54,6 +60,11 @@ try
     builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
+    builder.Services.AddScoped<ILanguageService, LanguageService>();
+    builder.Services.AddScoped<ILanguageTranslationService, LanguageTranslationSerivce>();
+    // mapping config
+    builder.Services.AddScoped<IMapper<Language, LanguageRequest>, LanguageMapper>();
+
     builder.Services.AddControllers().AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
@@ -105,6 +116,29 @@ try
     });
     #endregion
 
+    builder.Services.Configure<ApiBehaviorOptions>(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var errors = context.ModelState
+                .Where(e => e.Value.Errors.Count > 0)
+                .Select(e => new
+                {
+                    Field = e.Key,
+                    Error = e.Value.Errors.First().ErrorMessage
+                }).ToList();
+
+            var apiResponse = new ApiResponse<object>
+            {
+                Status = 400,
+                Error = errors
+            };
+
+            return new BadRequestObjectResult(apiResponse);
+        };
+    });
+
+
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     #region add miniprofiler
@@ -129,7 +163,7 @@ try
         {
             throw new Exception("Cannot connect to the database.");
         }
-        //await context.Database.MigrateAsync();
+        await context.Database.MigrateAsync();
         //var dbInit = services.GetRequiredService<DbInit>();
         //dbInit.Seed().Wait();
     }

@@ -10,6 +10,7 @@ using TechShop.Infrastructure.Repositories.RefreshTokenRepo;
 using TechShop.Infrastructure.Repositories.UserRepo;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore;
 
 namespace TechShop.Infrastructure.UnitOfWork
 {
@@ -35,6 +36,12 @@ namespace TechShop.Infrastructure.UnitOfWork
             return _context.Database.CreateExecutionStrategy();
         }
 
+        public async Task<TResult> ExecuteWithStrategyAsync<TResult>(Func<Task<TResult>> operation)
+        {
+            var strategy = CreateExecutionStrategy();
+            return await strategy.ExecuteAsync(operation);
+        }
+
         /// <summary>
         /// free memory cache and close connection
         /// </summary>
@@ -57,7 +64,7 @@ namespace TechShop.Infrastructure.UnitOfWork
 
         public ILanguageTranslationRepository LanguageTranslation
         {
-            get { return _languageTranslationRepository ?? (_languageTranslationRepository = new LanguageTranslation(_context)); }
+            get { return _languageTranslationRepository ?? (_languageTranslationRepository = new LanguageTranslationRepository(_context)); }
         }
 
         protected virtual void Dispose(bool disposing)

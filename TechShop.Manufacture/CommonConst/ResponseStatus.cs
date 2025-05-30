@@ -19,12 +19,15 @@ namespace TechShop.Manufacture.CommonConst
 
     public static class ResponseStatusName
     {
-        public const string Success = "Successfully!";
-        public const string UnSuccess = "UnSuccessfully!";
-        public const string Exists = "Data already exists!";
-        public const string NotFound = "Data not found!";
-        public const string Error = "Error!";
-        public const string Unauthorized = "Unauthorized!";
-        public const string InternalServerError = "Internal Server Error!";
+        public const string Success = "_success";
+        public const string UnSuccess = "_unsuccess";
+        public const string Exists = "_data_exists";
+        public const string NotFound = "_data_not_found";
+        public const string Error = "_error";
+        public const string Unauthorized = "_unauthorized";
+        public const string InternalServerError = "_internal_sv";
+        public const string UpdateDone = "_update_done";
+        public const string UpdateFailed = "_update_failed";
+        public const string DataRequired = "_data_required";
     }
 }

@@ -16,18 +16,20 @@ namespace TechShop.Manufacture.CommonConst
         #endregion
 
         #region Message
-        public static string SessionLoginEx = "Session login expired!";
-        public static string SessionLogin = "Session login!";
-        public static string LoginIn = "Login Successfully!";
-        public static string Logout = "Login out!";
-        public static string LoginFailed = "Login failed!";
-        public static string LogoutFailed = "Logout failed!";
-        public static string MissInformation = "Missing information!";
-        public static string InvalidToken = "Invalid token. Please login again.";
-        public static string UserNotActive = "User not active!";
-        public static string UserNotFound = "User not found!";
-        public static string UserOrPwdIncorrect = "User or password incorrect!";
+        public static string SessionLoginEx = "_session_expired";
+        public static string SessionLogin = "_session_login";
+        public static string LoginIn = "_login_success";
+        public static string Logout = "_logout";
+        public static string LoginFailed = "_login_failed";
+        public static string LogoutFailed = "_logout_failed";
+        public static string MissInformation = "_miss_info";
+        public static string InvalidToken = "_valid_token";
+        public static string UserNotActive = "_user_not_active";
+        public static string UserNotFound = "_user_not_found";
+        public static string UserOrPwdIncorrect = "_username_pwd_incorrect";
+        public static string Exception = "_call_to_manager";
+        public static string AddDone = "_add_done";
+        public static string AddFailed = "_add_failed";
         #endregion
-        public static string Exception = "Server error, please call to manager!";
     }
 }

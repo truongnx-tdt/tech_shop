@@ -18,6 +18,7 @@ namespace TechShop.Infrastructure.UnitOfWork
         public ILanguageTranslationRepository LanguageTranslation { get; }
         Task<bool> SaveChangesAsync();
         IExecutionStrategy CreateExecutionStrategy();
+        Task<TResult> ExecuteWithStrategyAsync<TResult>(Func<Task<TResult>> operation);
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task BulkDeleteAsync<T>(ICollection<T> datas) where T : class;
     }

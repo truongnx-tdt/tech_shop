@@ -9,9 +9,9 @@ using TechShop.Infrastructure.Repositories._BaseRepo;
 
 namespace TechShop.Infrastructure.Repositories.LanguageRepo
 {
-    public class LanguageTranslation : GenericRepository<Data.Entities.Languages.LanguageTranslation>, ILanguageTranslationRepository
+    public class LanguageTranslationRepository : GenericRepository<Data.Entities.Languages.LanguageTranslation>, ILanguageTranslationRepository
     {
-        public LanguageTranslation(ApplicationDbContext context) : base(context)
+        public LanguageTranslationRepository(ApplicationDbContext context) : base(context)
         {
         }
     }
