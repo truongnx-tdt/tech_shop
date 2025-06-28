@@ -4,15 +4,15 @@
 //  </copyright>
 // -----------------------------------------------------------------------"
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using TechShop.Infrastructure.UnitOfWork;
-using TechShop.Data.Entities.Auth;
 using TechShop.Application.Services.Auth;
-using TechShop.Data.Response;
-using TechShop.Data.Request;
 using TechShop.Data.DTO;
+using TechShop.Data.Entities.Auth;
+using TechShop.Data.Request;
+using TechShop.Data.Response;
+using TechShop.Infrastructure.UnitOfWork;
 using TechShop.Manufacture.CommonConst;
 
 namespace TechShop.Controllers
@@ -33,14 +33,14 @@ namespace TechShop.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost(RouteConst.Login)]
-        public async Task<ApiResponse<LoginResponse>> Login([FromBody] LoginRequest request)
+        public async Task<ActionResult<ApiResponse<LoginResponse>>> Login([FromBody] LoginRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return new ApiResponse<LoginResponse>() { Status = 400, Message = ResponseStatusName.UnSuccess, Error = ModelState };
             }
             var rs = await _authService.Login(request);
-            return new ApiResponse<LoginResponse>() { Status = ResponseStatusCode.Success, Data = rs, Message = rs.Message };
+            return rs;
         }
         /// <summary>
         /// Register API
@@ -72,7 +72,7 @@ namespace TechShop.Controllers
             }
             catch (Exception ex)
             {
-                return new ApiResponse<TokenModel>() { Status = ResponseStatusCode.UnSuccess, Message = ex.Message };
+                return new ApiResponse<TokenModel>() { Status = ResponseStatusCode.Unauthorized, Message = ex.Message };
             }
         }
         /// <summary>
@@ -128,7 +128,7 @@ namespace TechShop.Controllers
             try
             {
                 var rs = await _authService.GoogleLogin(idToken);
-                return Ok(new ApiResponse<LoginResponse>() { Status = 200, Data = rs, Message = rs.Message });
+                return Ok(new ApiResponse<LoginResponse>() { Status = 200, Data = rs });
             }
             catch (Exception)
             {

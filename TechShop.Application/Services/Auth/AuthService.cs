@@ -16,7 +16,6 @@ using TechShop.Infrastructure.UnitOfWork;
 using TechShop.Manufacture;
 using TechShop.Manufacture.CommonConst;
 using TechShop.Manufacture.Utils;
-using TechShop.Data.Entities.Auth;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -41,9 +40,9 @@ namespace TechShop.Application.Services.Auth
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<LoginResponse> Login(LoginRequest model)
+        public async Task<ApiResponse<LoginResponse>> Login(LoginRequest model)
         {
-            var rs = new LoginResponse();
+            var rs = new ApiResponse<LoginResponse>();
             try
             {
                 var userExists = await UnitOfWork.UserRepository
@@ -53,6 +52,7 @@ namespace TechShop.Application.Services.Auth
                     if (!userExists.IsActive)
                     {
                         rs.Message = StringConst.UserNotActive;
+                        rs.Status = ResponseStatusCode.Unauthorized;
                         return rs;
                     }
                     userExists.LastLogin = DateTimeOffset.UtcNow;
@@ -62,17 +62,30 @@ namespace TechShop.Application.Services.Auth
                     string token = _tokenService.GenerateAccessToken(authClaims);
                     string refreshToken = _tokenService.GenerateRefreshToken();
                     await SaveRefeshToken(userExists, refreshToken, sessionId);
-                    rs.AccessToken = token;
-                    rs.RefeshToken = refreshToken;
+                    rs.Data = new LoginResponse()
+                    {
+                        AccessToken = token,
+                        RefreshToken = refreshToken,
+                        UserInfoLogin = new UserInfoLogin()
+                        {
+                            UserName = userExists.Username,
+                            Email = userExists.Email,
+                            Name = userExists.FullName,
+                            Image = userExists.Picture,
+                            Role = userExists.Role
+                        }
+                    };
                     rs.Message = StringConst.LoginIn;
+                    rs.Status = ResponseStatusCode.Success;
                     return rs;
                 }
+                rs.Status = ResponseStatusCode.Unauthorized;
                 rs.Message = StringConst.UserOrPwdIncorrect;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                throw new UnauthorizedAccessException(StringConst.Exception);
+                return new ApiResponse<LoginResponse>() { Status = 500, Message = ResponseStatusName.InternalServerError, Error = ex.Message };
             }
             return rs;
         }
@@ -242,8 +255,9 @@ namespace TechShop.Application.Services.Auth
                             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                             new Claim(ClaimTypes.Email, userExists.Email),
                             new Claim(StringConst.ClaimUserId, userExists.Id.ToString()),
-                            new Claim(StringConst.ClaimRole, userExists.Role),
+                            new Claim(StringConst.ClaimRole, userExists.Role.ToString()),
                             new Claim(StringConst.ClaimSessionId, sessionId),
+                            new Claim(ClaimTypes.Role, userExists.Role.ToString())
                         };
         }
         private async Task SaveRefeshToken(User userExists, string refreshToken, string sessionId)
@@ -284,7 +298,8 @@ namespace TechShop.Application.Services.Auth
                         GoogleId = payload.Subject,
                         PasswordHash = "",
                         LoginProvider = StringConst.LoginProviderGG,
-                        IsActive = true
+                        IsActive = true,
+                        Role = Manufacture.Enums.UserRole.user
                     };
                     await UnitOfWork.UserRepository.AddAsyn(user);
                     await UnitOfWork.SaveChangesAsync();
@@ -296,10 +311,22 @@ namespace TechShop.Application.Services.Auth
                 var authClaims = CreateClams(user, sessionId);
                 string token = _tokenService.GenerateAccessToken(authClaims);
                 string refreshToken = _tokenService.GenerateRefreshToken();
-                
+
                 await SaveRefeshToken(user, refreshToken, sessionId);
 
-                return new LoginResponse() { AccessToken = token, RefeshToken = refreshToken, Message = StringConst.LoginIn };
+                return new LoginResponse()
+                {
+                    AccessToken = token,
+                    RefreshToken = refreshToken,
+                    UserInfoLogin = new UserInfoLogin
+                    {
+                        UserName = user.Username,
+                        Email = user.Email,
+                        Name = user.FullName ?? payload.Name,
+                        Image = user.Picture ?? payload.Picture,
+                        Role = user.Role
+                    }
+                };
             }
             catch (Exception ex)
             {
@@ -309,7 +336,11 @@ namespace TechShop.Application.Services.Auth
         }
         private async Task<GoogleJsonWebSignature.Payload> ValidateGoogleTokenAsync(string idToken)
         {
-            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
+            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken,
+                               new GoogleJsonWebSignature.ValidationSettings()
+                               {
+                                   Audience = new[] { AppSettings.GoogleClientId }
+                               });
 
             if (payload == null || string.IsNullOrEmpty(payload.Email))
                 throw new UnauthorizedAccessException("Invalid Google Token");

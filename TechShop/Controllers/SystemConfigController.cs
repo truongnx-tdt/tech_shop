@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------"
 
 using System.ComponentModel.DataAnnotations;
+using System.Drawing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TechShop.Application.Services.LanguageS;
@@ -13,6 +14,7 @@ using TechShop.Data.Entities.Languages;
 using TechShop.Data.Request;
 using TechShop.Data.Response;
 using TechShop.Manufacture.CommonConst;
+using TechShop.Manufacture.Enums;
 
 namespace TechShop.Controllers
 {
@@ -43,16 +45,16 @@ namespace TechShop.Controllers
         #region Language
         [HttpGet]
         [Route(RouteConst.LanguageResponses)]
-        public async Task<ActionResult<ApiResponse<List<LanguageResponse>>>> LanguageResponses()
+        public ActionResult<ApiResponse<List<LanguageResponse>>> LanguageResponses()
         {
-            var rs = await _languageService.LanguageResponses();
+            var rs = _languageService.LanguageResponses();
             return Ok(new ApiResponse<List<LanguageResponse>>()
             {
                 Status = ResponseStatusCode.Success,
                 Data = rs,
             });
         }
-        [Authorize]
+        //[Authorize(Roles = UserRoleNames.Admin)]
         [HttpGet]
         [Route(RouteConst.AdminGetLanguages)]
         public async Task<ActionResult<ApiResponse<List<Language>>>> AdminGetLanguages()
@@ -65,7 +67,7 @@ namespace TechShop.Controllers
             });
         }
 
-        [Authorize]
+        //[Authorize(Roles = UserRoleNames.Admin)]
         [HttpPut]
         [Route(RouteConst.AdminUpdateLanguage)]
         public async Task<ActionResult<ApiResponse<object>>> AdminUpdateLanguage(LanguageRequest request)
@@ -86,7 +88,7 @@ namespace TechShop.Controllers
             });
         }
 
-        [Authorize]
+        //[Authorize(Roles = UserRoleNames.Admin)]
         [HttpPost]
         [Route(RouteConst.AdminAddLanguage)]
         public async Task<ActionResult<ApiResponse<object>>> AdminAddLanguage(LanguageRequest request)
@@ -116,7 +118,7 @@ namespace TechShop.Controllers
 
         [HttpPost]
         [Route(RouteConst.AddLanguageTranslations)]
-        [Authorize]
+        //[Authorize(Roles = UserRoleNames.Admin)]
         public async Task<ActionResult<ApiResponse<object>>> AddLanguageTranslations(List<LanguageTranslationDTO> request)
         {
             if (request == null || !request.Any())

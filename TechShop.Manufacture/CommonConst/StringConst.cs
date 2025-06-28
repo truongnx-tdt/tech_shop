@@ -15,6 +15,8 @@ namespace TechShop.Manufacture.CommonConst
         public static string ClaimUserId = "UserID";
         #endregion
 
+        public const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         #region Message
         public static string SessionLoginEx = "_session_expired";
         public static string SessionLogin = "_session_login";

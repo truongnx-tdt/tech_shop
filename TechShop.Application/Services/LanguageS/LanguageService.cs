@@ -63,7 +63,7 @@ namespace TechShop.Application.Services.LanguageS
         /// Get Language For Client
         /// </summary>
         /// <returns></returns>
-        public async Task<List<LanguageResponse>> LanguageResponses()
+        public List<LanguageResponse> LanguageResponses()
         {
             var data = UnitOfWork.Language.FindBy(x => x.IsActive == true);
             var rs = data.Select(x => new LanguageResponse

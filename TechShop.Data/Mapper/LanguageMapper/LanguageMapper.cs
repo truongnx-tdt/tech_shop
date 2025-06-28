@@ -22,6 +22,11 @@ namespace TechShop.Data.Mapper.LanguageMapper
             };
         }
 
+        public ICollection<LanguageRequest> ToDtoList(ICollection<Language> entities)
+        {
+            throw new NotImplementedException();
+        }
+
         public Language ToEntity(LanguageRequest dto)
         {
             if (dto == null) return null;
@@ -32,6 +37,11 @@ namespace TechShop.Data.Mapper.LanguageMapper
                 Flag = dto.Flag,
                 IsActive = dto.IsActive,
             };
+        }
+
+        public ICollection<Language> ToEntityList(ICollection<LanguageRequest> dtos)
+        {
+            throw new NotImplementedException();
         }
 
         public void UpdateEntity(Language entity, LanguageRequest dto)

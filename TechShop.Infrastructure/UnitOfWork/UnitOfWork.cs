@@ -89,5 +89,10 @@ namespace TechShop.Infrastructure.UnitOfWork
         {
             await _context.BulkDeleteAsync(datas).ConfigureAwait(false);
         }
+
+        public async Task BulkInsertAsync<T>(ICollection<T> datas) where T : class
+        {
+            await _context.BulkInsertAsync(datas).ConfigureAwait(false);
+        }
     }
 }

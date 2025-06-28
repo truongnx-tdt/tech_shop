@@ -15,6 +15,8 @@ namespace TechShop.Manufacture.CommonConst
         public const string Logout = "/api/logout";
         public const string LogoutAll = "/api/logout-all";
 
+        public const string GetUserInfo = "/api/get-user-info";
+
         #region system config api
         public const string LanguageResponses = "/api/get-languages";
         public const string AdminGetLanguages = "/api/admin/get-languages";

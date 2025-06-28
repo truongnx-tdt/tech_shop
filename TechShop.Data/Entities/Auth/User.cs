@@ -7,6 +7,7 @@
 using System.ComponentModel.DataAnnotations;
 using TechShop.Data.Entities.Abtractions;
 using TechShop.Manufacture.CommonConst;
+using TechShop.Manufacture.Enums;
 
 namespace TechShop.Data.Entities.Auth
 {
@@ -30,7 +31,7 @@ namespace TechShop.Data.Entities.Auth
         public bool IsActive { get; set; } = true;
 
         [MaxLength(50)]
-        public string Role { get; set; } = "user";
+        public UserRole Role { get; set; }
         public string? GoogleId { get; set; }
         public string LoginProvider { get; set; } = StringConst.LoginProviderDefault;
         public DateTimeOffset? LastLogin { get; set; }

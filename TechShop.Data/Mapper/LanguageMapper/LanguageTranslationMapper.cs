@@ -21,6 +21,13 @@ namespace TechShop.Data.Mapper.LanguageMapper
                 Module = entity.Module
             };
         }
+
+        public ICollection<LanguageTranslationDTO> ToDtoList(ICollection<LanguageTranslation> entities)
+        {
+            if (entities == null || entities.Count == 0) return new List<LanguageTranslationDTO>();
+            return entities.Select(ToDto).ToList();
+        }
+
         public LanguageTranslation ToEntity(LanguageTranslationDTO dto)
         {
             if (dto == null) return null;
@@ -32,6 +39,13 @@ namespace TechShop.Data.Mapper.LanguageMapper
                 Module = dto.Module ?? "sys"
             };
         }
+
+        public ICollection<LanguageTranslation> ToEntityList(ICollection<LanguageTranslationDTO> dtos)
+        {
+            if (dtos == null || dtos.Count == 0) return new List<LanguageTranslation>();
+            return dtos.Select(ToEntity).ToList();
+        }
+
         public void UpdateEntity(LanguageTranslation entity, LanguageTranslationDTO dto)
         {
             throw new NotImplementedException();

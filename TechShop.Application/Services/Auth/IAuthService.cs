@@ -15,7 +15,7 @@ namespace TechShop.Application.Services.Auth
     public interface IAuthService : IBaseService
     {
         Task<(int, string)> Registeration(RegistrationRequest model);
-        Task<LoginResponse> Login(LoginRequest model);
+        Task<ApiResponse<LoginResponse>> Login(LoginRequest model);
         Task<TokenModel> TokenRefresh(TokenModel model);
         Task<(bool,string)> LogoutAsync(string username, string sessionId);
         Task<(bool,string)> LogoutAllAsync(string username);

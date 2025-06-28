@@ -30,5 +30,7 @@ namespace TechShop.Manufacture
         public static int TimeToClearTokenByHours => (int)Convert.ToInt64(configuration["RefreshToken:TimeToClearTokenByHours"]);
 
         public static string GoogleUserInfoUrl => configuration["Authorization:Google:UserInfoUrl"]!;
+
+        public static string GoogleClientId => configuration["Authorization:Google:ClientId"]!;
     }
 }

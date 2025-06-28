@@ -21,5 +21,6 @@ namespace TechShop.Infrastructure.UnitOfWork
         Task<TResult> ExecuteWithStrategyAsync<TResult>(Func<Task<TResult>> operation);
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task BulkDeleteAsync<T>(ICollection<T> datas) where T : class;
+        Task BulkInsertAsync<T>(ICollection<T> datas) where T : class;
     }
 }

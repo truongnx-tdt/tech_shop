@@ -26,7 +26,7 @@ namespace TechShop.Infrastructure.Repositories._BaseRepo
         public virtual async Task<IEnumerable<T>> GetAllAsyn()
         {
 
-            return await _context.Set<T>().ToListAsync().ConfigureAwait(false);
+            return await _context.Set<T>().AsNoTracking().ToListAsync().ConfigureAwait(false);
         }
 
         public virtual T Get(object id)
@@ -69,7 +69,7 @@ namespace TechShop.Infrastructure.Repositories._BaseRepo
 
         public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> match)
         {
-            return await _context.Set<T>().Where(match).ToListAsync().ConfigureAwait(false);
+            return await _context.Set<T>().Where(match).AsNoTracking().ToListAsync().ConfigureAwait(false);
         }
 
         public virtual void Delete(T entity)

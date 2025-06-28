@@ -18,6 +18,6 @@ namespace TechShop.Application.Services.LanguageS
         public Task<bool> UpdateLanguage(LanguageRequest request);
         public Task<string> AddLanguage(LanguageRequest request);
         #endregion
-        public Task<List<LanguageResponse>> LanguageResponses();
+        public List<LanguageResponse> LanguageResponses();
     }
 }
