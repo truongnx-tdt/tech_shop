@@ -15,7 +15,7 @@ namespace TechShop.Data.Request
         public string Username { get; set; } = null!;
 
         [Required]
-        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        [EmailAddress(ErrorMessage = "_valid_email")]
         [MaxLength(255)]
         public string Email { get; set; } = null!;
 
@@ -26,5 +26,11 @@ namespace TechShop.Data.Request
 
         [MaxLength(255)]
         public string? FullName { get; set; }
+        public string Details { get; set; } = string.Empty;
+        public string Street { get; set; } = string.Empty;
+        public string City { get; set; } = string.Empty;
+        public string State { get; set; } = string.Empty;
+        public string ZipCode { get; set; } = string.Empty;
+        public string Country { get; set; } = string.Empty;
     }
 }

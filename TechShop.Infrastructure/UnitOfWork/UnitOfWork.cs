@@ -11,6 +11,7 @@ using TechShop.Infrastructure.Repositories.UserRepo;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore;
+using TechShop.Infrastructure.Repositories.AddressRepo;
 
 namespace TechShop.Infrastructure.UnitOfWork
 {
@@ -18,9 +19,10 @@ namespace TechShop.Infrastructure.UnitOfWork
     {
         private readonly ApplicationDbContext _context;
         private UserRepository _userRepository;
-        private IRefreshTokenRepository _refreshTokenRepository;
+        private RefreshTokenRepository _refreshTokenRepository;
         private LanguageRepository _languageRepository;
-        private ILanguageTranslationRepository _languageTranslationRepository;
+        private LanguageTranslationRepository _languageTranslationRepository;
+        private AddressRepository _addressRepository;
         public UnitOfWork(ApplicationDbContext context) => _context = context;
         public async Task<IDbContextTransaction> BeginTransactionAsync()
         {
@@ -67,6 +69,8 @@ namespace TechShop.Infrastructure.UnitOfWork
             get { return _languageTranslationRepository ?? (_languageTranslationRepository = new LanguageTranslationRepository(_context)); }
         }
 
+        public IAddressRepository AddressRepository => _addressRepository ?? (_addressRepository = new AddressRepository(_context));
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
@@ -89,10 +93,13 @@ namespace TechShop.Infrastructure.UnitOfWork
         {
             await _context.BulkDeleteAsync(datas).ConfigureAwait(false);
         }
-
         public async Task BulkInsertAsync<T>(ICollection<T> datas) where T : class
         {
             await _context.BulkInsertAsync(datas).ConfigureAwait(false);
+        }
+        public async Task BulkUpdateAsync<T>(ICollection<T> datas) where T : class
+        {
+            await _context.BulkUpdateAsync(datas).ConfigureAwait(false);
         }
     }
 }

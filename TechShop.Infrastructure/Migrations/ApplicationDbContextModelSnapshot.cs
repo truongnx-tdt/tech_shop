@@ -22,6 +22,48 @@ namespace TechShop.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("TechShop.Data.Entities.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("TechShop.Data.Entities.Auth.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -176,7 +218,7 @@ namespace TechShop.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Key")
+                    b.Property<string>("Id")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -193,10 +235,21 @@ namespace TechShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageCode", "Key")
+                    b.HasIndex("LanguageCode", "Id")
                         .IsUnique();
 
                     b.ToTable("LanguageTranslations");
+                });
+
+            modelBuilder.Entity("TechShop.Data.Entities.Address", b =>
+                {
+                    b.HasOne("TechShop.Data.Entities.Auth.User", "User")
+                        .WithMany("Addresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("TechShop.Data.Entities.Auth.RefreshToken", b =>
@@ -223,6 +276,8 @@ namespace TechShop.Infrastructure.Migrations
 
             modelBuilder.Entity("TechShop.Data.Entities.Auth.User", b =>
                 {
+                    b.Navigation("Addresses");
+
                     b.Navigation("RefreshTokens");
                 });
 

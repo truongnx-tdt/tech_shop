@@ -8,7 +8,7 @@ namespace TechShop.Data.Response
 {
     public class LanguageResponse
     {
-        public string Key { get; set; }
+        public string Id { get; set; }
         public string Name { get; set; }
         public string Flag { get; set; }
     }

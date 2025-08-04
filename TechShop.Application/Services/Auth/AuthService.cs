@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using TechShop.Data.Entities;
 
 namespace TechShop.Application.Services.Auth
 {
@@ -65,15 +66,7 @@ namespace TechShop.Application.Services.Auth
                     rs.Data = new LoginResponse()
                     {
                         AccessToken = token,
-                        RefreshToken = refreshToken,
-                        UserInfoLogin = new UserInfoLogin()
-                        {
-                            UserName = userExists.Username,
-                            Email = userExists.Email,
-                            Name = userExists.FullName,
-                            Image = userExists.Picture,
-                            Role = userExists.Role
-                        }
+                        RefreshToken = refreshToken
                     };
                     rs.Message = StringConst.LoginIn;
                     rs.Status = ResponseStatusCode.Success;
@@ -178,8 +171,23 @@ namespace TechShop.Application.Services.Auth
                                 Username = model.Username,
                                 FullName = model.FullName,
                                 PasswordHash = passwordHash,
+                                Role = Manufacture.Enums.UserRole.user
                             };
                             await UnitOfWork.UserRepository.AddAsyn(user);
+
+                            Address address = new()
+                            {
+                                UserId = user.Id,
+                                Details = model.Details,
+                                Street = model.Street,
+                                City = model.City,
+                                State = model.State,
+                                ZipCode = model.ZipCode,
+                                Country = model.Country
+                            };
+
+                            await UnitOfWork.AddressRepository.AddAsyn(address);
+
                             rs = await UnitOfWork.SaveChangesAsync();
                             if (rs)
                             {
@@ -317,15 +325,7 @@ namespace TechShop.Application.Services.Auth
                 return new LoginResponse()
                 {
                     AccessToken = token,
-                    RefreshToken = refreshToken,
-                    UserInfoLogin = new UserInfoLogin
-                    {
-                        UserName = user.Username,
-                        Email = user.Email,
-                        Name = user.FullName ?? payload.Name,
-                        Image = user.Picture ?? payload.Picture,
-                        Role = user.Role
-                    }
+                    RefreshToken = refreshToken
                 };
             }
             catch (Exception ex)

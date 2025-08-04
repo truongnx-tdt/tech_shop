@@ -9,6 +9,8 @@ using TechShop.Data.Entities.Languages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using TechShop.Data.Entities;
+using System.Security.Claims;
 
 namespace TechShop.Infrastructure.AppDbContext
 {
@@ -22,10 +24,11 @@ namespace TechShop.Infrastructure.AppDbContext
             _httpContextAccessor = httpContextAccessor;
         }
 
-        DbSet<User> Users { get; set; }
-        DbSet<RefreshToken> RefreshTokens { get; set; }
-        DbSet<Language> Languages { get; set; }
-        DbSet<LanguageTranslation> LanguageTranslations { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<LanguageTranslation> LanguageTranslations { get; set; }
+        public DbSet<Address> Addresses { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -57,6 +60,14 @@ namespace TechShop.Infrastructure.AppDbContext
                 .HasOne(lt => lt.Language)
                 .WithMany(l => l.Translations)
                 .HasForeignKey(lt => lt.LanguageCode)
+                .OnDelete(DeleteBehavior.Cascade);
+            #endregion
+
+            #region config entity for address table
+            modelBuilder.Entity<Address>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.Addresses)
+                .HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
             #endregion
         }
@@ -168,26 +179,43 @@ namespace TechShop.Infrastructure.AppDbContext
                 return "Unknown";
             }
         }
-        //public string? GetUser()
-        //{
-        //    try
-        //    {
-        //        var context = _httpContextAccessor.HttpContext;
-        //        if (context == null || context.User == null || !context.User.Identity.IsAuthenticated)
-        //            return null;
+        public string? GetUserID()
+        {
+            try
+            {
+                var context = _httpContextAccessor.HttpContext;
+                if (context == null || context.User == null || !context.User.Identity.IsAuthenticated)
+                    return null;
 
-        //        // Lấy Claim "sub" hoặc "user_id" hoặc "nameidentifier" tùy theo cách bạn set khi đăng nhập
-        //        var userIdClaim = context.User.FindFirst(ClaimTypes.NameIdentifier) // Thường là "sub" hoặc "nameidentifier"
-        //                         ?? context.User.FindFirst("sub")
-        //                         ?? context.User.FindFirst("user_id");
+                // Lấy Claim "sub" hoặc "user_id" hoặc "nameidentifier" tùy theo cách bạn set khi đăng nhập
+                var userIdClaim = context.User.FindFirst("UserID");
 
-        //        return userIdClaim?.Value;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Failed to get user ID from claims");
-        //        return null;
-        //    }
-        //}
+                return userIdClaim?.Value;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get user ID from claims");
+                return null;
+            }
+        }
+
+        public string? GetUserName()
+        {
+            try
+            {
+                var context = _httpContextAccessor.HttpContext;
+                if (context == null || context.User == null || !context.User.Identity.IsAuthenticated)
+                    return null;
+
+                // get from ClaimTypes.Name
+                var userNameClaim = context.User.FindFirst(ClaimTypes.Name);
+                return userNameClaim?.Value;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to get user ID from claims");
+                return null;
+            }
+        }
     }
 }

@@ -34,15 +34,19 @@ namespace TechShop.Controllers
         {
             var systemConfig = new
             {
-                Version = new Version(0, 0, 1),
+                Version = new Version(0, 0, 2),
                 BuildDate = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"),
-                Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"
+                Environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "TDT"
             };
 
             return Ok(systemConfig);
         }
 
         #region Language
+        /// <summary>
+        ///  Get nguage responses for the frontend
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route(RouteConst.LanguageResponses)]
         public ActionResult<ApiResponse<List<LanguageResponse>>> LanguageResponses()
@@ -54,6 +58,10 @@ namespace TechShop.Controllers
                 Data = rs,
             });
         }
+        /// <summary>
+        /// Admin get all languages
+        /// </summary>
+        /// <returns></returns>
         //[Authorize(Roles = UserRoleNames.Admin)]
         [HttpGet]
         [Route(RouteConst.AdminGetLanguages)]
@@ -70,7 +78,7 @@ namespace TechShop.Controllers
         //[Authorize(Roles = UserRoleNames.Admin)]
         [HttpPut]
         [Route(RouteConst.AdminUpdateLanguage)]
-        public async Task<ActionResult<ApiResponse<object>>> AdminUpdateLanguage(LanguageRequest request)
+        public async Task<ActionResult<ApiResponse<object>>> AdminUpdateLanguage(List<LanguageRequest> request)
         {
             var rs = await _languageService.UpdateLanguage(request);
             if (rs)
@@ -91,7 +99,7 @@ namespace TechShop.Controllers
         //[Authorize(Roles = UserRoleNames.Admin)]
         [HttpPost]
         [Route(RouteConst.AdminAddLanguage)]
-        public async Task<ActionResult<ApiResponse<object>>> AdminAddLanguage(LanguageRequest request)
+        public async Task<ActionResult<ApiResponse<object>>> AdminAddLanguage(List<LanguageRequest> request)
         {
             var rs = await _languageService.AddLanguage(request);
 
@@ -106,7 +114,7 @@ namespace TechShop.Controllers
         #region Language translation
         [HttpGet]
         [Route(RouteConst.GetLanguageTranslations)]
-        public async Task<ActionResult<ApiResponse<object>>> GetLanguageLocalize([Required] string lang, string? module)
+        public async Task<ActionResult<ApiResponse<object>>> GetLanguageLocalize(string? lang, string? module)
         {
             var rs = await _languageTranslationService.GetAsync(lang, module).ConfigureAwait(false);
             return Ok(new ApiResponse<List<LanguageTranslation>>()
@@ -143,6 +151,23 @@ namespace TechShop.Controllers
                 Status = ResponseStatusCode.UnSuccess,
                 Message = StringConst.AddFailed
             });
+        }
+
+        [HttpPut]
+        [Route(RouteConst.UpdateLanguageTranslations)]
+        //[Authorize(Roles = UserRoleNames.Admin)]
+        public async Task<ActionResult<ApiResponse<object>>> UpdateLanguageTranslations(List<LanguageTranslationDTO> request)
+        {
+            if (request == null || !request.Any())
+            {
+                return BadRequest(new ApiResponse<object>()
+                {
+                    Status = ResponseStatusCode.UnSuccess,
+                    Message = StringConst.DataRequired
+                });
+            }
+            var rs = await _languageTranslationService.EditMultiAsync(request).ConfigureAwait(false);
+            return Ok(rs);
         }
         #endregion
     }

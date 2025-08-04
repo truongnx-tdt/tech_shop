@@ -72,6 +72,7 @@ namespace TechShop.Middleware
             app.ConfigureErrorHandling();
 
             app.UseAuthorization();
+            app.UseRateLimiter();
             app.MapControllers();
         }
 

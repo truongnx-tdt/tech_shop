@@ -55,7 +55,7 @@ namespace TechShop.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_LanguageTranslations_LanguageCode_Key",
                 table: "LanguageTranslations",
-                columns: new[] { "LanguageCode", "Key" },
+                columns: new[] { "LanguageCode", "Id" },
                 unique: true);
         }
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using TechShop.Application.Services.Interfaces;
 using TechShop.Data.DTO;
 using TechShop.Data.Entities.Languages;
+using TechShop.Data.Response;
 
 namespace TechShop.Application.Services.LanguageS
 {
@@ -15,7 +16,7 @@ namespace TechShop.Application.Services.LanguageS
     {
         Task<List<LanguageTranslation>> GetAsync(string languageCode, string? module);
         Task<bool> AddMultiAsync(List<LanguageTranslationDTO> request);
-        Task<bool> EditMultiAsync(List<LanguageTranslationDTO> request);
+        Task<ApiResponse<object>> EditMultiAsync(List<LanguageTranslationDTO> request);
         Task<bool> DeleteByLCode(string languageCode);
         Task<bool> DeleteByIds(List<int> id);
         Task<bool> Import(IFormFile file);

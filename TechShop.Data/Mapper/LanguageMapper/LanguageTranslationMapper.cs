@@ -33,6 +33,7 @@ namespace TechShop.Data.Mapper.LanguageMapper
             if (dto == null) return null;
             return new LanguageTranslation
             {
+                Id = dto.Id,
                 LanguageCode = dto.LanguageCode,
                 Key = dto.Key,
                 Value = dto.Value,
@@ -45,7 +46,6 @@ namespace TechShop.Data.Mapper.LanguageMapper
             if (dtos == null || dtos.Count == 0) return new List<LanguageTranslation>();
             return dtos.Select(ToEntity).ToList();
         }
-
         public void UpdateEntity(LanguageTranslation entity, LanguageTranslationDTO dto)
         {
             throw new NotImplementedException();

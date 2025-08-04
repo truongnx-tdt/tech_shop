@@ -6,7 +6,9 @@
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TechShop.Application.Services.UserS;
 using TechShop.Data.Response;
+using TechShop.Manufacture.CommonConst;
 
 namespace TechShop.Controllers
 {
@@ -14,14 +16,37 @@ namespace TechShop.Controllers
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;
-        public UserController(ILogger<UserController> logger)
+        private readonly IUserService _userService;
+        public UserController(ILogger<UserController> logger, IUserService userService)
         {
             _logger = logger;
+            _userService = userService;
         }
         [Authorize]
         [HttpGet]
-        [Route("/api/devices-login")] 
-        public Task<ActionResult<ApiResponse<object>>> GetDevicesLogin()
+        [Route(RouteConst.GetDevicesLoggingIn)] 
+        public async Task<ActionResult<ApiResponse<object>>> GetDevicesLogin()
+        {
+            try
+            {
+                var response = await _userService.GetDevicesLoginAsync();
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting devices login.");
+                return StatusCode(500, new ApiResponse<object>
+                {
+                    Status = ResponseStatusCode.Error,
+                    Message = StringConst.Exception,
+                });
+            }
+        }
+
+        [Authorize]
+        [HttpGet]
+        [Route(RouteConst.GetDeviceInfo)]
+        public Task<ActionResult<ApiResponse<object>>> GetDeviceInfo()
         {
             var devices = new List<object>
             {

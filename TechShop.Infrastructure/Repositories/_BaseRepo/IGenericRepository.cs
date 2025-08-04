@@ -13,6 +13,7 @@ namespace TechShop.Infrastructure.Repositories._BaseRepo
         Task<T> AddAsyn(T t);
         bool Any();
         Task<bool> AnyAsync();
+        Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
         int Count();
         Task<int> CountAsync();
         void Delete(T entity);

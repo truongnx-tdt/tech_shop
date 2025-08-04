@@ -11,11 +11,13 @@
 //  </copyright>
 // -----------------------------------------------------------------------"
 
+using TechShop.Data.Entities.Auth;
 using TechShop.Infrastructure.Repositories._BaseRepo;
 
 namespace TechShop.Infrastructure.Repositories.RefreshTokenRepo
 {
     public interface IRefreshTokenRepository : IGenericRepository<Data.Entities.Auth.RefreshToken>
     {
+        Task<IEnumerable<RefreshToken>> GetDevicesLoginByUser(string user);
     }
 }

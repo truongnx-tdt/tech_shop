@@ -15,8 +15,8 @@ namespace TechShop.Application.Services.LanguageS
     {
         #region Admin set
         public Task<List<Language>> GetLanguages();
-        public Task<bool> UpdateLanguage(LanguageRequest request);
-        public Task<string> AddLanguage(LanguageRequest request);
+        public Task<bool> UpdateLanguage(List<LanguageRequest> request);
+        public Task<string> AddLanguage(List<LanguageRequest> request);
         #endregion
         public List<LanguageResponse> LanguageResponses();
     }

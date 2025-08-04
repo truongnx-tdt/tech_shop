@@ -6,6 +6,7 @@
 
 using System.IO.Compression;
 using System.Text;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,9 @@ namespace TechShop.Middleware
 
             // Configure logging
             builder.ConfigureLogging();
+
+            // Configure Rate Limiter
+            builder.ConfigureRateLimiter();
         }
 
         private static void ConfigureCompression(this WebApplicationBuilder builder)
@@ -210,6 +214,26 @@ namespace TechShop.Middleware
             // NLog: Setup NLog for Dependency injection
             builder.Logging.ClearProviders();
             builder.Host.UseNLog();
+        }
+
+        private static void ConfigureRateLimiter(this WebApplicationBuilder builder)
+        {
+            // Configure rate limiting
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(
+                   httpContext => RateLimitPartition.GetFixedWindowLimiter(
+                       partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                       factory: partition => new FixedWindowRateLimiterOptions
+                       {
+                           AutoReplenishment = true,
+                           PermitLimit = 20,
+                           QueueLimit = 0,
+                           Window = TimeSpan.FromMinutes(1)
+                       }
+                   )
+                );
+            });
         }
     }
 }

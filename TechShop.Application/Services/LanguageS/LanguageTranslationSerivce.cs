@@ -9,7 +9,9 @@ using Microsoft.Extensions.Logging;
 using TechShop.Data.DTO;
 using TechShop.Data.Entities.Languages;
 using TechShop.Data.Mapper;
+using TechShop.Data.Response;
 using TechShop.Infrastructure.UnitOfWork;
+using TechShop.Manufacture.CommonConst;
 
 namespace TechShop.Application.Services.LanguageS
 {
@@ -61,14 +63,63 @@ namespace TechShop.Application.Services.LanguageS
             throw new NotImplementedException();
         }
 
-        public Task<bool> EditMultiAsync(List<LanguageTranslationDTO> request)
+        public async Task<ApiResponse<object>> EditMultiAsync(List<LanguageTranslationDTO> request)
         {
-            throw new NotImplementedException();
+            var res = new ApiResponse<object>
+            {
+                Status = ResponseStatusCode.UnSuccess,
+                Message = StringConst.UpdateFailed
+            };
+
+            if (request == null || !request.Any())
+            {
+                return res;
+            }
+
+            if (request.Any(x => x.Id <= 0))
+            {
+                res.Message = StringConst.InvalidId;
+                return res;
+            }
+            if (request.Any(x => string.IsNullOrEmpty(x.LanguageCode)))
+            {
+                res.Message = StringConst.InvalidLanguageCode;
+                return res;
+            }
+            var rs = await UnitOfWork.ExecuteWithStrategyAsync(async () =>
+            {
+                using (var transaction = await UnitOfWork.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        var translations = _mapper.ToEntityList(request).ToList();
+                        await UnitOfWork.BulkUpdateAsync(translations);
+                        transaction.Commit();
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        res.Message = StringConst.Exception;
+                        transaction.Rollback();
+                        _logger.LogError(ex.Message);
+                        return false;
+                    }
+                }
+            });
+            if (rs)
+            {
+                return new ApiResponse<object>
+                {
+                    Status = ResponseStatusCode.Success,
+                    Message = StringConst.UpdateDone,
+                };
+            }
+            return res;
         }
 
         public async Task<List<LanguageTranslation>> GetAsync(string languageCode, string? module)
         {
-            var rs = await UnitOfWork.LanguageTranslation.FindAllAsync(x => x.LanguageCode == languageCode);
+            var rs = await UnitOfWork.LanguageTranslation.FindAllAsync(x => String.IsNullOrEmpty(languageCode) || x.LanguageCode == languageCode);
             return rs.ToList();
         }
 

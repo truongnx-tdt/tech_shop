@@ -36,5 +36,6 @@ namespace TechShop.Data.Entities.Auth
         public string LoginProvider { get; set; } = StringConst.LoginProviderDefault;
         public DateTimeOffset? LastLogin { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
+        public ICollection<Address> Addresses { get; set; }
     }
 }

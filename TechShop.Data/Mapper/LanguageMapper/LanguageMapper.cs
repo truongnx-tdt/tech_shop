@@ -24,7 +24,8 @@ namespace TechShop.Data.Mapper.LanguageMapper
 
         public ICollection<LanguageRequest> ToDtoList(ICollection<Language> entities)
         {
-            throw new NotImplementedException();
+            if (entities == null || !entities.Any()) return new List<LanguageRequest>();
+            return entities.Select(ToDto).ToList();
         }
 
         public Language ToEntity(LanguageRequest dto)
@@ -41,7 +42,8 @@ namespace TechShop.Data.Mapper.LanguageMapper
 
         public ICollection<Language> ToEntityList(ICollection<LanguageRequest> dtos)
         {
-            throw new NotImplementedException();
+            if (dtos == null || !dtos.Any()) return new List<Language>();
+            return dtos.Select(ToEntity).ToList();
         }
 
         public void UpdateEntity(Language entity, LanguageRequest dto)

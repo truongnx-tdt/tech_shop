@@ -6,6 +6,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
+using TechShop.Manufacture.CommonConst;
 
 namespace TechShop.Data.Common
 {
@@ -23,7 +24,7 @@ namespace TechShop.Data.Common
 
         public override string FormatErrorMessage(string name)
         {
-            return "Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt.";
+            return StringConst.PasswordRequired;
         }
     }
 }

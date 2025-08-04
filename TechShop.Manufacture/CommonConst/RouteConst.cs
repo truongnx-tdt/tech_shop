@@ -18,13 +18,16 @@ namespace TechShop.Manufacture.CommonConst
         public const string GetUserInfo = "/api/get-user-info";
 
         #region system config api
-        public const string LanguageResponses = "/api/get-languages";
-        public const string AdminGetLanguages = "/api/admin/get-languages";
+        public const string LanguageResponses = "/api/languages";
+        public const string AdminGetLanguages = "/api/admin/languages";
         public const string AdminUpdateLanguage = "/api/admin/update-language";
         public const string AdminAddLanguage = "/api/admin/add-language";
         public const string Config = "/api/version";
         public const string GetLanguageTranslations = "/api/translations";
         public const string AddLanguageTranslations = "/api/admin/add-translations";
+        public const string UpdateLanguageTranslations = "/api/admin/update-translations";
+        public const string GetDevicesLoggingIn = "/api/devices-login";
+        public const string GetDeviceInfo = "/api/device-info";
         #endregion
     }
 }

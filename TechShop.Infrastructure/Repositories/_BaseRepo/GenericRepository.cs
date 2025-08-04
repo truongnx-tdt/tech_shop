@@ -153,6 +153,11 @@ namespace TechShop.Infrastructure.Repositories._BaseRepo
             return await _context.Set<T>().AnyAsync();
         }
 
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> expression)
+        {
+            return await _context.Set<T>().AnyAsync(expression);
+        }
+
         public T FirstOrDefault(Expression<Func<T, bool>> match)
         {
             return _context.Set<T>().FirstOrDefault(match);
@@ -182,7 +187,7 @@ namespace TechShop.Infrastructure.Repositories._BaseRepo
             GC.SuppressFinalize(this);
         }
 
-       
+
     }
 }
 

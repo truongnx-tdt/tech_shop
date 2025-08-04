@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------"
 
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using TechShop.Data.Entities.Languages;
 using TechShop.Data.Mapper;
 using TechShop.Data.Request;
@@ -24,23 +25,18 @@ namespace TechShop.Application.Services.LanguageS
             _mapper = mapper;
         }
 
-        public async Task<string> AddLanguage(LanguageRequest request)
+        public async Task<string> AddLanguage(List<LanguageRequest> request)
         {
             try
             {
-                Language language = _mapper.ToEntity(request);
-                var data = await UnitOfWork.Language.FindAsync(x => x.Id == language.Id);
-                if (data == null)
+                List<Language> language = _mapper.ToEntityList(request).ToList();
+                var ids = language.Select(x => x.Id).ToList();
+                // Check if exists in database before adding 
+                var data = await UnitOfWork.Language.AnyAsync(x => ids.Contains(x.Id));
+                if (!data)
                 {
-                    await UnitOfWork.Language.AddAsyn(language).ConfigureAwait(false);
-                    if (await UnitOfWork.SaveChangesAsync())
-                    {
-                        return StringConst.AddDone;
-                    }
-                    else
-                    {
-                        return StringConst.AddFailed;
-                    }
+                    await UnitOfWork.BulkInsertAsync(language).ConfigureAwait(false);
+                    return StringConst.AddDone;
                 }
                 else
                 {
@@ -68,27 +64,52 @@ namespace TechShop.Application.Services.LanguageS
             var data = UnitOfWork.Language.FindBy(x => x.IsActive == true);
             var rs = data.Select(x => new LanguageResponse
             {
-                Key = x.Id,
+                Id = x.Id,
                 Name = x.Name,
                 Flag = x.Flag,
             });
             return rs.ToList();
         }
 
-        public async Task<bool> UpdateLanguage(LanguageRequest request)
+        public async Task<bool> UpdateLanguage(List<LanguageRequest> request)
         {
+            bool isUpdate = false;
             try
             {
-                Language language = _mapper.ToEntity(request);
-                await UnitOfWork.Language.UpdateAsyn(language, language.Id);
-                return await UnitOfWork.SaveChangesAsync();
+                _logger?.LogInformation("Updating languages..." + JsonConvert.SerializeObject(request));
+                if (request == null || !request.Any())
+                {
+                    _logger?.LogError("No languages to update.");
+                    return false;
+                }
+                // transaction
+                isUpdate = await UnitOfWork.ExecuteWithStrategyAsync(async () =>
+                {
+                    using (var transaction = await UnitOfWork.BeginTransactionAsync())
+                    {
+                        try
+                        {
+                            // Update languages in bulk
+                            await UnitOfWork.BulkUpdateAsync(_mapper.ToEntityList(request).ToList());
+                            transaction.Commit();
+                            _logger?.LogInformation("Languages updated successfully.");
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            _logger?.LogError($"Error updating languages: {ex.Message}");
+                            return false;
+                        }
+                    }
+                });
+
             }
             catch (Exception ex)
             {
                 _logger?.LogError(ex.Message);
-                return false;
             }
-
+            return isUpdate;
         }
     }
 }

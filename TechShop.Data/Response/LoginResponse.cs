@@ -11,15 +11,5 @@ namespace TechShop.Data.Response
     {
         public string? AccessToken { get; set; }
         public string? RefreshToken { get; set; }
-        public UserInfoLogin? UserInfoLogin { get; set; }
-    }
-
-    public class UserInfoLogin
-    {
-        public string UserName { get; set; }
-        public string Email { get; set; }
-        public string Name { get; set; }
-        public string Image { get; set; }
-        public UserRole Role { get; set; } 
     }
 }

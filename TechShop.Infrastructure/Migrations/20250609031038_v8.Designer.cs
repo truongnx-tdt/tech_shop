@@ -175,7 +175,7 @@ namespace TechShop.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Key")
+                    b.Property<string>("Id")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -192,7 +192,7 @@ namespace TechShop.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageCode", "Key")
+                    b.HasIndex("LanguageCode", "Id")
                         .IsUnique();
 
                     b.ToTable("LanguageTranslations");

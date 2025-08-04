@@ -16,6 +16,7 @@ namespace TechShop.Manufacture.CommonConst
         #endregion
 
         public const string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        public const string PasswordRequired = "_passwordRequired";
 
         #region Message
         public static string SessionLoginEx = "_session_expired";
@@ -32,6 +33,12 @@ namespace TechShop.Manufacture.CommonConst
         public static string Exception = "_call_to_manager";
         public static string AddDone = "_add_done";
         public static string AddFailed = "_add_failed";
+        public static string DataRequired = "_data_required";
+        public static string UpdateDone = "_update_done";
+        public static string UpdateFailed = "_update_failed";
+        public static string InvalidId = "_invalid_id";
+        public static string InvalidKey = "_invalid_key";
+        public static string InvalidLanguageCode = "_invalid_language_code";
         #endregion
     }
 }
